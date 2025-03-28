@@ -62,7 +62,7 @@
                 // 获取所有语言的文章并合并
                 for (const lang of languages) {
                     try {
-                        const response = await fetch(`/articles/${lang}-articles.json`);
+                        const response = await fetch(`../../articles/${lang}-articles.json`);
                         if (response.ok) {
                             const articles = await response.json();
                             allArticles = allArticles.concat(articles.map(article => ({...article, lang})));
@@ -114,7 +114,7 @@
                 }[article.lang];
                 
                 articleCard.innerHTML = `
-                    <a href="./articles/${article.lang}/${article.slug}.html">
+                    <a href="../${article.lang}/${article.slug}.html">
                         <div class="article-card-inner">
                             <h3 class="article-title">${article.title}</h3>
                             <div class="article-meta">

@@ -15,7 +15,12 @@ async function loadArticles() {
       const languages = ['zh', 'en', 'jp'];
       for (const lang of languages) {
         try {
-          const response = await fetch(`/articles/${lang}-articles.json`);
+          // 在GitHub Pages上使用相对路径
+          const jsonPath = currentPath.includes('cyouhanki.github.io') ? 
+            `articles/${lang}-articles.json` : 
+            `./articles/${lang}-articles.json`;
+            
+          const response = await fetch(jsonPath);
           if (response.ok) {
             const langArticles = await response.json();
             articles = articles.concat(langArticles.map(article => ({...article, lang})));
@@ -28,7 +33,8 @@ async function loadArticles() {
       // 语言特定页面：只加载对应语言的文章
       const lang = getCurrentLanguage();
       try {
-        const response = await fetch(`/articles/${lang}-articles.json`);
+        // 从当前页面的相对位置获取JSON
+        const response = await fetch(`../${lang}-articles.json`);
         if (response.ok) {
           articles = await response.json();
           articles = articles.map(article => ({...article, lang}));
@@ -61,16 +67,28 @@ async function loadArticles() {
       articleCard.className = 'article-card';
       
       // 只在首页显示语言标签
-      const langHtml = currentPath === '/' || currentPath === '/index.html' 
-        ? `<span class="article-lang">${{
+      const langHtml = currentPath === '/' || currentPath === '/index.html' || 
+        currentPath.includes('cyouhanki.github.io') ? 
+        `<span class="article-lang">${{
             'zh': '中文',
             'en': 'English',
             'jp': '日本語'
-          }[article.lang]}</span>`
-        : '';
+          }[article.lang]}</span>` : 
+        '';
+      
+      // 在首页和GitHub Pages上使用不同的路径格式
+      let articleLink = '';
+      if (currentPath === '/' || currentPath === '/index.html') {
+        articleLink = `./articles/${article.lang}/${article.slug}.html`;
+      } else if (currentPath.includes('cyouhanki.github.io')) {
+        articleLink = `articles/${article.lang}/${article.slug}.html`;
+      } else {
+        // 其他页面使用相对路径
+        articleLink = `../${article.lang}/${article.slug}.html`;
+      }
       
       articleCard.innerHTML = `
-        <a href="./articles/${article.lang}/${article.slug}.html">
+        <a href="${articleLink}">
           <div class="article-card-inner">
             <h3 class="article-title">${article.title}</h3>
             <div class="article-meta">
@@ -93,9 +111,21 @@ async function loadArticles() {
       'jp': 'もっと見る'
     }[getCurrentLanguage()] || '查看更多文章';
     
-    const viewMoreLink = document.createElement('div');
+    // 根据当前页面位置设置"查看更多"链接
+    let viewMoreLink = document.createElement('div');
     viewMoreLink.className = 'view-more';
-    viewMoreLink.innerHTML = `<a href="./articles/all">${viewMoreText}</a>`;
+    
+    let allArticlesLink = '';
+    if (currentPath === '/' || currentPath === '/index.html') {
+      allArticlesLink = './articles/all';
+    } else if (currentPath.includes('cyouhanki.github.io')) {
+      allArticlesLink = 'articles/all';
+    } else {
+      // 其他页面使用相对路径
+      allArticlesLink = '../all';
+    }
+    
+    viewMoreLink.innerHTML = `<a href="${allArticlesLink}">${viewMoreText}</a>`;
     articlesList.appendChild(viewMoreLink);
     
     articlesContainer.innerHTML = '';
