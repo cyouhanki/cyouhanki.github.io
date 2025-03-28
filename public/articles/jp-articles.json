@@ -1,0 +1,42 @@
+[
+  {
+    "title": "『ファスト＆スロー』読書メモ",
+    "date": "2024-03-27",
+    "category": "読書メモ",
+    "excerpt": "ダニエル・カーネマンの『ファスト＆スロー』の読書メモ、人間の思考システムについて考察",
+    "language": "jp",
+    "slug": "book-review-thinking"
+  },
+  {
+    "title": "都市写真入門ガイド",
+    "date": "2024-03-24",
+    "category": "写真",
+    "excerpt": "都市写真の基本テクニックと注意点を紹介し、より良い写真を撮るためのガイド",
+    "language": "jp",
+    "slug": "hobby-photography"
+  },
+  {
+    "title": "京都の春",
+    "date": "2024-03-26",
+    "category": "生活",
+    "excerpt": "京都の春を訪れ、桜の美しさを感じるひとときを記録",
+    "language": "jp",
+    "slug": "life-spring-kyoto"
+  },
+  {
+    "title": "2024年のAIトレンド展望",
+    "date": "2024-03-25",
+    "category": "技術",
+    "excerpt": "2024年の人工知能の主要な発展方向と潜在的な影響について考察",
+    "language": "jp",
+    "slug": "tech-ai-trends"
+  },
+  {
+    "title": "JavaScriptの基礎知識まとめ",
+    "date": "2024-03-28",
+    "category": "技術",
+    "excerpt": "JavaScriptの基本概念、変数、関数、オブジェクトなどの重要なポイントをまとめました",
+    "language": "jp",
+    "slug": "tech-javascript-basics"
+  }
+]

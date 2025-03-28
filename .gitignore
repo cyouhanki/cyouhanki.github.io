@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# additional files to exclude
+node_modules/
+.vscode/
+*.log
+.idea/

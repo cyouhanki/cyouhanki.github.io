@@ -1,0 +1,50 @@
+[
+  {
+    "title": "《思考，快与慢》读书笔记",
+    "date": "2024-03-27",
+    "category": "读书笔记",
+    "excerpt": "丹尼尔·卡尼曼的《思考，快与慢》读书笔记，探讨人类的思维系统",
+    "language": "zh",
+    "slug": "book-review-thinking"
+  },
+  {
+    "title": "城市摄影入门指南",
+    "date": "2024-03-24",
+    "category": "摄影",
+    "excerpt": "分享城市摄影的基本技巧和注意事项，帮助摄影爱好者拍出好照片",
+    "language": "zh",
+    "slug": "hobby-photography"
+  },
+  {
+    "title": "京都春日",
+    "date": "2024-03-26",
+    "category": "生活随笔",
+    "excerpt": "记录一个在京都度过的春日，感受樱花飘落的美好时刻",
+    "language": "zh",
+    "slug": "life-spring-kyoto"
+  },
+  {
+    "title": "2024年AI发展趋势展望",
+    "date": "2024-03-25",
+    "category": "技术",
+    "excerpt": "探讨人工智能在2024年的主要发展方向和潜在影响",
+    "language": "zh",
+    "slug": "tech-ai-trends"
+  },
+  {
+    "title": "JavaScript基础知识总结",
+    "date": "2024-03-28",
+    "category": "技术",
+    "excerpt": "本文总结了JavaScript的基本概念，包括变量、函数、对象等核心知识点",
+    "language": "zh",
+    "slug": "tech-javascript-basics"
+  },
+  {
+    "title": "测试文章",
+    "date": "2024-03-28",
+    "category": "测试",
+    "excerpt": "这是一篇测试文章",
+    "language": "zh",
+    "slug": "test-article"
+  }
+]
