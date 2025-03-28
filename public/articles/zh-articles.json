@@ -1,18 +1,1 @@
-[
-  {
-    "title": "测试文章 - 已更新",
-    "date": "2024-03-28T00:00:00.000Z",
-    "category": "测试",
-    "excerpt": "这是一篇更新后的测试文章",
-    "slug": "test-article",
-    "lang": "zh"
-  },
-  {
-    "title": "《思考，快与慢》读书笔记",
-    "date": "2024-03-27T00:00:00.000Z",
-    "category": "读书笔记",
-    "excerpt": "丹尼尔·卡尼曼的《思考，快与慢》读书笔记，探讨人类的思维系统",
-    "slug": "book-review-thinking",
-    "lang": "zh"
-  }
-]
+[]
