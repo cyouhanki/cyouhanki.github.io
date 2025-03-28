@@ -9,7 +9,8 @@ async function loadArticles() {
     let articles = [];
     
     // 根据页面类型决定加载哪些文章
-    if (currentPath === '/' || currentPath === '/index.html') {
+    if (currentPath === '/' || currentPath === '/index.html' || 
+        currentPath === '/cyouhanki.github.io/' || currentPath === '/cyouhanki.github.io/index.html') {
       // 首页：加载所有语言的最新文章
       const languages = ['zh', 'en', 'jp'];
       for (const lang of languages) {
@@ -126,8 +127,14 @@ async function loadArticles() {
 // 获取当前语言
 function getCurrentLanguage() {
   const currentPath = window.location.pathname;
-  if (currentPath.includes('/en/') || currentPath.includes("./articles/en')) return 'en';
-  if (currentPath.includes('/jp/') || currentPath.includes("./articles/jp')) return 'jp';
+  if (currentPath.includes('/en/') || currentPath.includes('/articles/en') || 
+      currentPath.includes('/cyouhanki.github.io/en/') || currentPath.includes('/cyouhanki.github.io/articles/en')) {
+    return 'en';
+  }
+  if (currentPath.includes('/jp/') || currentPath.includes('/articles/jp') ||
+      currentPath.includes('/cyouhanki.github.io/jp/') || currentPath.includes('/cyouhanki.github.io/articles/jp')) {
+    return 'jp';
+  }
   return 'zh';
 }
 
