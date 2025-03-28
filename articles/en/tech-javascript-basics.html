@@ -4,69 +4,98 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JavaScript Basics: A Comprehensive Guide - Cyouhanki's Home</title>
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/article.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/article.css">
 </head>
 <body>
     <header>
         <nav>
             <div class="nav-left">
-                <a href="./" class="logo">Cyouhanki's Home</a>
+                <a href="../../" class="logo">Cyouhanki's Home</a>
             </div>
             <div class="nav-right">
                 <div class="nav-links">
-                    <a href="./">首页</a>
-                    <a href="./articles/all">所有文章</a>
-                    <a href="./articles/zh">中文</a>
-                    <a href="./articles/en">En</a>
-                    <a href="./articles/jp">日本語</a>
+                    <a href="../../">首页</a>
+                    <a href="../all">所有文章</a>
+                    <a href="../zh">中文</a>
+                    <a href="../en" class="active">En</a>
+                    <a href="../jp">日本語</a>
                 </div>
+                <button class="menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
         </nav>
     </header>
+
     <main class="article-content">
         <article>
             <h1>JavaScript Basics: A Comprehensive Guide</h1>
             <div class="article-meta">
-                <span class="article-date">Thu Mar 28 2024 09:00:00 GMT+0900 (日本标准时间)</span>
+                <span class="article-date">2024-03-28</span>
                 <span class="article-category">Technology</span>
             </div>
             <div class="article-body">
-                <h1 id="javascript-basics-a-comprehensive-guide">JavaScript Basics: A Comprehensive Guide</h1>
-<h2 id="variable-declaration">Variable Declaration</h2>
-<p>In JavaScript, we have three ways to declare variables:</p>
-<pre><code class="language-javascript">var name = &quot;John&quot;;  // Function scope
-let age = 25;      // Block scope
-const PI = 3.14;   // Constant
+                <h2>A comprehensive guide to JavaScript fundamentals, covering variables, functions, and objects</h2>
+                <p>This article provides a detailed overview of JavaScript's fundamental concepts, including variable declarations, function types, and object manipulation.</p>
+
+                <h2>Variable Declarations</h2>
+                <p>JavaScript offers three ways to declare variables:</p>
+                <pre><code>// var - function-scoped
+var name = "John";
+
+// let - block-scoped
+let age = 30;
+
+// const - constant value
+const PI = 3.14;
 </code></pre>
-<h2 id="function-definitions">Function Definitions</h2>
-<p>Functions can be defined in multiple ways:</p>
-<pre><code class="language-javascript">// Regular function
+
+                <h2>Functions</h2>
+                <p>Functions in JavaScript can be defined in multiple ways:</p>
+                <pre><code>// Function declaration
 function sayHello(name) {
     return `Hello, ${name}!`;
 }
 
 // Arrow function
-const greet = (name) =&gt; `Hello, ${name}!`;
+const greet = (name) => `Hello, ${name}!`;
 </code></pre>
-<h2 id="object-operations">Object Operations</h2>
-<p>Objects in JavaScript are collections of key-value pairs:</p>
-<pre><code class="language-javascript">const person = {
-    name: &#39;Alice&#39;,
-    age: 30,
+
+                <h2>Objects</h2>
+                <p>Objects are collections of key-value pairs:</p>
+                <pre><code>const person = {
+    name: 'Alice',
+    age: 25,
     sayHi() {
-        console.log(`I am ${this.name}`);
+        console.log(`Hi, I'm ${this.name}`);
     }
 };
 </code></pre>
-<h2 id="summary">Summary</h2>
-<p>JavaScript is a flexible language, and understanding these basic concepts is crucial for further learning. </p>
-
             </div>
         </article>
     </main>
+
     <footer>
         <p>&copy; 2025 Cyouhanki's Home. All rights reserved.</p>
     </footer>
+
+    <script src="../../js/main.js"></script>
+    <script>
+        // 初始化移动端菜单
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', function() {
+                    menuToggle.classList.toggle('active');
+                    navLinks.classList.toggle('active');
+                });
+            }
+        });
+    </script>
 </body>
 </html>

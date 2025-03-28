@@ -21,6 +21,11 @@
                     <a href="../en">En</a>
                     <a href="../jp">日本語</a>
                 </div>
+                <button class="menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
         </nav>
     </header>
@@ -48,5 +53,21 @@ console.log(&quot;自动生成系统正常工作!&quot;);
     <footer>
         <p>&copy; 2025 Cyouhanki's Home. All rights reserved.</p>
     </footer>
+
+    <script src="../../js/main.js"></script>
+    <script>
+        // 初始化移动端菜单
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', function() {
+                    menuToggle.classList.toggle('active');
+                    navLinks.classList.toggle('active');
+                });
+            }
+        });
+    </script>
 </body>
 </html>

@@ -258,10 +258,15 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // 移动端菜单切换
-            document.querySelector('.menu-toggle').addEventListener('click', function() {
-                this.classList.toggle('active');
-                document.querySelector('.nav-links').classList.toggle('active');
-            });
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', function() {
+                    menuToggle.classList.toggle('active');
+                    navLinks.classList.toggle('active');
+                });
+            }
 
             // 地图初始化
             const map = L.map('map').setView([43.0618, 141.3545], 13);
