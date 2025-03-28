@@ -93,10 +93,12 @@ async function updatePaths(filePath, fileExt) {
     if (HTML_EXTS.includes(fileExt) || CSS_EXTS.includes(fileExt) || JS_EXTS.includes(fileExt)) {
       // 替换引用路径
       content = content.replace(/["']\/?public\//g, '"/')
-                       .replace(/["']\/?\/css\//g, '"/css/')
-                       .replace(/["']\/?\/js\//g, '"/js/')
-                       .replace(/["']\/?\/images\//g, '"/images/')
-                       .replace(/["']\/?\/articles\//g, '"/articles/');
+                       .replace(/["']\/?\/css\//g, '"./css/')
+                       .replace(/["']\/?\/js\//g, '"./js/')
+                       .replace(/["']\/?\/images\//g, '"./images/')
+                       .replace(/["']\/?\/articles\//g, '"./articles/')
+                       .replace(/href=["']\//g, 'href="./')
+                       .replace(/src=["']\//g, 'src="./');
     }
     
     // 保存更新后的内容

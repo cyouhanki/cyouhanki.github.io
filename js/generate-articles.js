@@ -17,23 +17,23 @@ function createHtmlTemplate(title, content, language) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${title} - Cyouhanki's Home</title>
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/article.css">
+    <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/article.css">
 </head>
 <body>
     <header>
         <nav>
             <div class="nav-left">
-                <a href="/" class="logo">Cyouhanki's Home</a>
+                <a href="./" class="logo">Cyouhanki's Home</a>
             </div>
             <div class="nav-right">
                 <div class="nav-links">
-                    <a href="/">首页</a>
-                    <a href="/articles/all">所有文章</a>
-                    <a href="/articles/zh" ${language === 'zh' ? 'class="active"' : ''}>中文</a>
-                    <a href="/articles/en" ${language === 'en' ? 'class="active"' : ''}>En</a>
-                    <a href="/articles/jp" ${language === 'jp' ? 'class="active"' : ''}>日本語</a>
+                    <a href="./">首页</a>
+                    <a href="./articles/all">所有文章</a>
+                    <a href="./articles/zh" ${language === 'zh' ? 'class="active"' : ''}>中文</a>
+                    <a href="./articles/en" ${language === 'en' ? 'class="active"' : ''}>En</a>
+                    <a href="./articles/jp" ${language === 'jp' ? 'class="active"' : ''}>日本語</a>
                 </div>
                 <button class="menu-toggle">
                     <span></span>
@@ -48,13 +48,13 @@ function createHtmlTemplate(title, content, language) {
             ${content}
         </article>
         <div class="back-to-home">
-            <a href="/">返回首页</a>
+            <a href="./">返回首页</a>
         </div>
     </main>
     <footer>
         <p>&copy; 2025 Cyouhanki's Home. All rights reserved.</p>
     </footer>
-    <script src="/js/main.js"></script>
+    <script src="./js/main.js"></script>
 </body>
 </html>`;
 }
@@ -89,7 +89,7 @@ function createArticleListPage(language, articles) {
     articles.forEach(article => {
       articlesHtml += `
         <article class="article-card">
-          <a href="/articles/${language}/${article.slug}.html">
+          <a href="./articles/${language}/${article.slug}.html">
             <h3>${article.title}</h3>
             <div class="article-meta">
               <span class="article-date">${article.date}</span>
@@ -110,22 +110,22 @@ function createArticleListPage(language, articles) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${pageTitle} - Cyouhanki's Home</title>
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/article.css">
+    <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/article.css">
 </head>
 <body>
     <header>
         <nav>
             <div class="nav-left">
-                <a href="/" class="logo">Cyouhanki's Home</a>
+                <a href="./" class="logo">Cyouhanki's Home</a>
             </div>
             <div class="nav-right">
                 <div class="nav-links">
-                    <a href="/">首页</a>
-                    <a href="/articles/zh" ${language === 'zh' ? 'class="active"' : ''}>中文</a>
-                    <a href="/articles/en" ${language === 'en' ? 'class="active"' : ''}>En</a>
-                    <a href="/articles/jp" ${language === 'jp' ? 'class="active"' : ''}>日本語</a>
+                    <a href="./">首页</a>
+                    <a href="./articles/zh" ${language === 'zh' ? 'class="active"' : ''}>中文</a>
+                    <a href="./articles/en" ${language === 'en' ? 'class="active"' : ''}>En</a>
+                    <a href="./articles/jp" ${language === 'jp' ? 'class="active"' : ''}>日本語</a>
                 </div>
                 <button class="menu-toggle">
                     <span></span>
@@ -146,7 +146,7 @@ function createArticleListPage(language, articles) {
     <footer>
         <p>&copy; 2025 Cyouhanki's Home. All rights reserved.</p>
     </footer>
-    <script src="/js/main.js"></script>
+    <script src="./js/main.js"></script>
 </body>
 </html>`;
 }

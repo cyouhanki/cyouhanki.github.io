@@ -69,7 +69,7 @@ async function loadArticles() {
         : '';
       
       articleCard.innerHTML = `
-        <a href="/articles/${article.lang}/${article.slug}.html">
+        <a href="./articles/${article.lang}/${article.slug}.html">
           <div class="article-card-inner">
             <h3 class="article-title">${article.title}</h3>
             <div class="article-meta">
@@ -94,7 +94,7 @@ async function loadArticles() {
     
     const viewMoreLink = document.createElement('div');
     viewMoreLink.className = 'view-more';
-    viewMoreLink.innerHTML = `<a href="/articles/all">${viewMoreText}</a>`;
+    viewMoreLink.innerHTML = `<a href="./articles/all">${viewMoreText}</a>`;
     articlesList.appendChild(viewMoreLink);
     
     articlesContainer.innerHTML = '';
@@ -126,8 +126,8 @@ async function loadArticles() {
 // 获取当前语言
 function getCurrentLanguage() {
   const currentPath = window.location.pathname;
-  if (currentPath.includes('/en/') || currentPath.includes("/articles/en')) return 'en';
-  if (currentPath.includes('/jp/') || currentPath.includes("/articles/jp')) return 'jp';
+  if (currentPath.includes('/en/') || currentPath.includes("./articles/en')) return 'en';
+  if (currentPath.includes('/jp/') || currentPath.includes("./articles/jp')) return 'jp';
   return 'zh';
 }
 
@@ -317,7 +317,7 @@ function initMap() {
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
       background: #fff;
     ">
-      <img src="/self1.png" style="
+      <img src="./self1.png" style="
         width: 100%;
         height: 100%;
         object-fit: cover;

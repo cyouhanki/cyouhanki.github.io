@@ -38,7 +38,7 @@ async function loadArticles() {
             );
 
             card.innerHTML = `
-                <a href="/articles/${lang}/${article.slug}.html">
+                <a href="./articles/${lang}/${article.slug}.html">
                     <div class="article-card-content">
                         <h2>${article.title}</h2>
                         <div class="meta">
