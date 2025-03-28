@@ -1,0 +1,26 @@
+{
+  "name": "site_pure",
+  "version": "1.0.0",
+  "description": "个人网站",
+  "main": "index.js",
+  "scripts": {
+    "serve": "http-server ./public -p 3000",
+    "dev": "node server.js",
+    "start": "node server.js",
+    "generate": "node public/js/generate-articles.js",
+    "watch": "node scripts/watch.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chokidar": "^3.6.0",
+    "express": "^4.18.2",
+    "front-matter": "^4.0.2",
+    "gray-matter": "^4.0.3",
+    "http-server": "^14.1.1",
+    "marked": "^4.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
