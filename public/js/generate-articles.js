@@ -9,7 +9,7 @@ const languages = ['zh', 'en', 'jp'];
 // 项目根目录路径
 const rootDir = path.join(__dirname, '../..');
 
-// HTML模板
+// HTML模板 , 添加了文章列表页面的样式 路劲需要 的话 从这里改动
 function createHtmlTemplate(title, content, language) {
   return `<!DOCTYPE html>
 <html lang="${language}">
@@ -18,6 +18,7 @@ function createHtmlTemplate(title, content, language) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${title} - Cyouhanki's Home</title>
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+ 
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/article.css">
 </head>
