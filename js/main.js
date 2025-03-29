@@ -179,26 +179,28 @@ function getCurrentLanguage() {
 
 // 页面加载完成后执行
 document.addEventListener('DOMContentLoaded', () => {
-  // 加载书籍
-  loadBooks();
-  
-  // 加载文章
-  loadArticles();
-  
-  // 初始化移动端菜单
-  initMobileMenu();
-  
-  // 初始化分类标签
-  initCategoryTags();
-  
-  // 初始化时间和空间分布图表（如果存在）
-  if (document.getElementById('timeChart')) {
-    initTimeChart();
-  }
-  
-  if (document.getElementById('map')) {
-    initMap();
-  }
+    console.log('DOM Content Loaded');
+    
+    // 初始化移动端菜单
+    initMobileMenu();
+    
+    // 初始化分类标签
+    initCategoryTags();
+    
+    // 加载书籍
+    loadBooks();
+    
+    // 加载文章
+    loadArticles();
+    
+    // 初始化时间和空间分布图表（如果存在）
+    if (document.getElementById('timeChart')) {
+        initTimeChart();
+    }
+    
+    if (document.getElementById('map')) {
+        initMap();
+    }
 });
 
 // 初始化时间分布图表
@@ -465,83 +467,118 @@ function initMap() {
   });
 }
 
+// 定义全局书籍数据
+const books = [
+    {
+        title: "波兰人",
+        author: "John Maxwel Coetzee",
+        cover: "./images/books/Polish_man.jpeg",
+        category: "Novel",
+        description: "一本关于波兰人的小说。"
+    },
+    {
+        title: "The Routledge Handbook of Research Method in the Study of Religion",
+        author: "Steven Engler and Michael Stausberg",
+        cover: "./images/books/The%20Routledge%20Handbook%20of%20Research%20Method%20in%20the%20Study%20of%20Religion.png",
+        category: "Major",
+        description: "宗教研究方法的权威指南。"
+    },
+    {
+        title: "穿过针眼",
+        author: "彼得布朗",
+        cover: "./images/books/穿过针眼（彼得布朗）.png",
+        category: "Major",
+        description: "关于早期基督教财富观的研究。"
+    },
+    {
+        title: "古代诺斯替主义经典文集",
+        author: "张新樟",
+        cover: "./images/books/古代诺斯替主义经典文集（张新樟）.png",
+        category: "Major",
+        description: "诺斯替主义经典文献汇编。"
+    },
+    {
+        title: "夹边沟记事",
+        author: "杨显惠",
+        cover: "./images/books/夹边沟记事.png",
+        category: "Novel",
+        description: "一部反映历史的小说。"
+    },
+    {
+        title: "The Tree of Gnosis",
+        author: "loan P. Couliano",
+        cover: "./images/books/The%20Tree%20of%20Gnosis%20Gnostic%20Mythology%20from%20Early%20Christianity%20to%20Modern%20Nihilism%20.png",
+        category: "Major",
+        description: "A comprehensive study of Gnostic mythology from early Christianity to modern nihilism."
+    },
+    {
+        title: "聖母",
+        author: "秋吉理香子",
+        cover: "./images/books/聖母秋吉理香子.png",
+        category: "Novel",
+        description: "推理小说、面白い."
+    }
+];
+
 // 加载书籍列表
 function loadBooks() {
     const booksGrid = document.querySelector('.books-grid');
-    if (!booksGrid) return;
+    if (!booksGrid) {
+        console.error('Books grid element not found');
+        return;
+    }
 
-  try {
-    const books = [
-      {
-        title: "人类简史",
-        author: "尤瓦尔·赫拉利",
-        cover: "images/books/sapiens.jpg",
-        category: "Major",
-        description: "从认知革命到人工智能，探索人类历史的宏大叙事。"
-      },
-      {
-        title: "未来简史",
-        author: "尤瓦尔·赫拉利",
-        cover: "images/books/homo-deus.jpg",
-        category: "Major",
-        description: "人类将面临的挑战与机遇，从生物技术到人工智能。"
-      },
-      {
-        title: "21世纪资本论",
-        author: "托马斯·皮凯蒂",
-        cover: "images/books/capital.jpg",
-        category: "Major",
-        description: "关于财富不平等的深入分析与思考。"
-      },
-      {
-        title: "Clean Code",
-        author: "Robert C. Martin",
-        cover: "images/books/clean-code.jpg",
-        category: "Technical",
-        description: "软件开发的艺术与实践，打造优雅代码的指南。"
-      },
-      {
-        title: "设计模式",
-        author: "Erich Gamma等",
-        cover: "images/books/design-patterns.jpg",
-        category: "Technical",
-        description: "面向对象设计的经典之作，软件开发必读。"
-      },
-      {
-        title: "三体",
-        author: "刘慈欣",
-        cover: "images/books/three-body.jpg",
-        category: "Novel",
-        description: "中国科幻小说的巅峰之作，探索宇宙与人性。"
-      }
-    ];
-
-    booksGrid.innerHTML = '';
-    
-    // 根据当前激活的分类标签过滤书籍
-    const activeCategory = document.querySelector('.category-tag.active');
-    const categoryName = activeCategory ? activeCategory.textContent.split('\n')[0].trim() : 'Major';
-    
-    const filteredBooks = categoryName === 'All' 
-        ? books 
-        : books.filter(book => book.category === categoryName);
+    try {
+        console.log('Loading books...');
+        booksGrid.innerHTML = '';
         
-    filteredBooks.forEach(book => {
-        const bookCard = document.createElement('div');
-        bookCard.className = 'book-card';
-        bookCard.innerHTML = `
-            <img src="${book.cover}" alt="${book.title}" onerror="this.src='images/placeholder.jpg'">
-            <h3>${book.title}</h3>
-            <p class="author">${book.author}</p>
-            <p class="description">${book.description}</p>
-        `;
-        booksGrid.appendChild(bookCard);
+        // 根据当前激活的分类标签过滤书籍
+        const activeCategory = document.querySelector('.category-tag.active');
+        console.log('Active category element:', activeCategory);
+        
+        if (!activeCategory) {
+            console.error('No active category found');
+            return;
+        }
+        
+        const categoryName = activeCategory.textContent.split('\n')[0].trim();
+        console.log('Active category name:', categoryName);
+        
+        const filteredBooks = categoryName === 'All' 
+            ? books 
+            : books.filter(book => book.category === categoryName);
+            
+        console.log('Filtered books:', filteredBooks);
+        
+        if (filteredBooks.length === 0) {
+            console.log('No books found for category:', categoryName);
+            booksGrid.innerHTML = `
+                <div style="text-align: center; padding: 2rem; color: #666;">
+                    该分类下暂无书籍。
+                </div>
+            `;
+            return;
+        }
+            
+        filteredBooks.forEach(book => {
+            console.log('Creating book card for:', book.title);
+            const bookCard = document.createElement('div');
+            bookCard.className = 'book-card';
+            bookCard.innerHTML = `
+                <img src="${book.cover}" alt="${book.title}" onerror="this.src='./images/placeholder.jpg'">
+                <div class="book-info">
+                    <h3 class="book-title">${book.title}</h3>
+                    <p class="book-author">${book.author}</p>
+                    <p class="book-description">${book.description}</p>
+                </div>
+            `;
+            booksGrid.appendChild(bookCard);
         });
     } catch (error) {
-    console.error('Error loading books:', error);
-    booksGrid.innerHTML = `
+        console.error('Error loading books:', error);
+        booksGrid.innerHTML = `
             <div style="text-align: center; padding: 2rem; color: #666;">
-        没有找到书籍。
+                加载书籍时出错，请稍后再试。
             </div>
         `;
     }
@@ -604,20 +641,87 @@ function initMobileMenu() {
 
 // 初始化分类标签点击事件
 function initCategoryTags() {
-  const categoryTags = document.querySelectorAll('.category-tag');
-  
-  if (!categoryTags.length) return;
-  
-  categoryTags.forEach(tag => {
-    tag.addEventListener('click', function() {
-      // 移除所有标签的active类
-      categoryTags.forEach(t => t.classList.remove('active'));
-      
-      // 设置当前标签为active
-      this.classList.add('active');
-      
-      // 重新加载书籍
-      loadBooks();
+    const categoryTags = document.querySelectorAll('.category-tag');
+    
+    if (!categoryTags.length) {
+        console.error('No category tags found');
+        return;
+    }
+    
+    console.log('Initializing category tags:', categoryTags.length);
+    
+    // 计算每个分类的书籍数量
+    const categoryCounts = {};
+    books.forEach(book => {
+        categoryCounts[book.category] = (categoryCounts[book.category] || 0) + 1;
     });
-  });
-} 
+
+    // 更新分类标签的数量
+    categoryTags.forEach(tag => {
+        const category = tag.textContent.trim();
+        const count = categoryCounts[category] || 0;
+        tag.setAttribute('data-count', count);
+    });
+    
+    categoryTags.forEach(tag => {
+        console.log('Setting up click handler for tag:', tag.textContent);
+        tag.addEventListener('click', function() {
+            console.log('Category tag clicked:', this.textContent);
+            
+            // 移除所有标签的active类
+            categoryTags.forEach(t => t.classList.remove('active'));
+            
+            // 设置当前标签为active
+            this.classList.add('active');
+            
+            // 重新加载书籍
+            loadBooks();
+        });
+    });
+}
+
+// 添加技能条动画
+function initSkillBars() {
+    const skillItems = document.querySelectorAll('.skill-item');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const skillBar = entry.target.querySelector('.skill-bar');
+                const percentage = skillBar.getAttribute('data-percentage');
+                
+                // 延迟一点时间再执行动画，让用户有时间看到初始状态
+                setTimeout(() => {
+                    skillBar.style.width = percentage + '%';
+                }, 300);
+                
+                // 停止观察已经显示的元素
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {threshold: 0.3});
+    
+    // 开始观察所有技能项
+    skillItems.forEach(item => {
+        observer.observe(item);
+    });
+}
+
+// 页面加载完成后初始化
+document.addEventListener('DOMContentLoaded', function() {
+    // 移动端菜单切换
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (menuToggle) {
+        menuToggle.addEventListener('click', function() {
+            this.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+    }
+    
+    // 初始化技能条动画
+    initSkillBars();
+    
+    // 其他已有的初始化代码...
+}); 
