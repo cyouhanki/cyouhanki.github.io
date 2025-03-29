@@ -21,10 +21,8 @@ async function handleFileChange(filePath, eventType) {
     // 如果是删除事件，清理对应的 HTML 文件
     if (eventType === 'unlink') {
         try {
-            const relativePath = path.relative(ARTICLES_DIR, filePath);
-            const [lang, filename] = relativePath.split(path.sep);
-            const slug = path.basename(filename, '.md');
-            const htmlPath = path.join(PUBLIC_DIR, 'articles', lang, `${slug}.html`);
+            // 直接在同一目录中查找对应的HTML文件
+            const htmlPath = filePath.replace('.md', '.html');
             
             // 删除对应的 HTML 文件
             await fs.unlink(htmlPath).catch(() => {});

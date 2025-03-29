@@ -34,7 +34,11 @@ async function loadArticles() {
       const lang = getCurrentLanguage();
       try {
         // 从当前页面的相对位置获取JSON
-        const response = await fetch(`../${lang}-articles.json`);
+        const jsonPath = currentPath.includes('/articles/') ? 
+          `${lang}-articles.json` : 
+          `./articles/${lang}-articles.json`;
+          
+        const response = await fetch(jsonPath);
         if (response.ok) {
           articles = await response.json();
           articles = articles.map(article => ({...article, lang}));

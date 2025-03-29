@@ -1,18 +1,10 @@
 [
   {
-    "title": "test for watching which generates this page",
-    "date": "2024-03-28T00:00:00.000Z",
-    "category": "Technology",
-    "excerpt": "A comprehensive guide to JavaScript fundamentals, covering variables, functions, and objects",
-    "slug": "atest",
-    "lang": "en"
-  },
-  {
-    "title": "JavaScript Basics: A Comprehensive Guide",
-    "date": "2024-03-28T00:00:00.000Z",
-    "category": "Technology",
-    "excerpt": "A comprehensive guide to JavaScript fundamentals, covering variables, functions, and objects",
-    "slug": "tech-javascript-basics",
+    "title": "ENglish test",
+    "date": "2024-03-29T00:00:00.000Z",
+    "category": "测试",
+    "excerpt": "这是一篇测试文章，用于验证生成功能是否正常工作",
+    "slug": "test-en",
     "lang": "en"
   }
 ]

@@ -3,24 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>記事一覧 - Cyouhanki's Home</title>
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/article.css">
+    <title>日本語記事 - Cyouhanki's Home</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/article.css">
 </head>
 <body>
     <header>
         <nav>
             <div class="nav-left">
-                <a href="/" class="logo">Cyouhanki's Home</a>
+                <a href="../../" class="logo">Cyouhanki's Home</a>
             </div>
             <div class="nav-right">
                 <div class="nav-links">
-                    <a href="/">首页</a>
-                    <a href="/articles/all" class="active">所有文章</a>
-                    <a href="/articles/zh" >中文</a>
-                    <a href="/articles/en" >En</a>
-                    <a href="/articles/jp" class="active">日本語</a>
+                    <a href="../../">首页</a>
+                    <a href="../all">所有文章</a>
+                    <a href="../zh" >中文</a>
+                    <a href="../en" >En</a>
+                    <a href="../jp" class="active">日本語</a>
                 </div>
                 <button class="menu-toggle">
                     <span></span>
@@ -32,26 +31,41 @@
     </header>
     <main>
         <div class="articles-container">
-            <h1 class="page-title">全ての記事</h1>
+            <h1 class="page-title">日本語記事</h1>
             <div class="articles-list">
                 <div class="articles-grid">
         <article class="article-card">
-          <a href="/articles/jp/book-review-thinking.html">
-            <h3>『ファスト＆スロー』読書メモ</h3>
-            <div class="article-meta">
-              <span class="article-date">2024-03-27</span>
-              <span class="article-category">読書メモ</span>
+          <a href="test-jp.html">
+            <div class="article-card-inner">
+              <h3 class="article-title">日本語テスト</h3>
+              <div class="article-meta">
+                <span class="article-date">Fri Mar 29 2024 09:00:00 GMT+0900 (日本标准时间)</span>
+                <span class="article-category">测试</span>
+              </div>
+              <p class="article-excerpt">这是一篇测试文章，用于验证生成功能是否正常工作</p>
             </div>
-            <p class="article-excerpt">ダニエル・カーネマンの『ファスト＆スロー』の読書メモ、人間の思考システムについて考察</p>
           </a>
-        </article>
-      </div>
+        </article></div>
             </div>
         </div>
     </main>
     <footer>
         <p>&copy; 2025 Cyouhanki's Home. All rights reserved.</p>
     </footer>
-    <script src="/js/main.js"></script>
+    <script src="../../js/main.js"></script>
+    <script>
+        // 初始化移动端菜单
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', function() {
+                    menuToggle.classList.toggle('active');
+                    navLinks.classList.toggle('active');
+                });
+            }
+        });
+    </script>
 </body>
 </html>

@@ -62,7 +62,7 @@
                 // 获取所有语言的文章并合并
                 for (const lang of languages) {
                     try {
-                        const response = await fetch(`../../articles/${lang}-articles.json`);
+                        const response = await fetch(`../${lang}-articles.json`);
                         if (response.ok) {
                             const articles = await response.json();
                             allArticles = allArticles.concat(articles.map(article => ({...article, lang})));
