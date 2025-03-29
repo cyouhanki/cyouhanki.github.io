@@ -33,15 +33,26 @@ async function loadArticles() {
       // 语言特定页面：只加载对应语言的文章
       const lang = getCurrentLanguage();
       try {
-        // 根据环境使用不同的路径
-        const jsonPath = currentPath.includes('site_pure') ? 
-          `/site_pure/articles/${lang}-articles.json` : 
-          `./articles/${lang}-articles.json`;
+        // 根据环境和页面位置使用不同的路径
+        let jsonPath;
+        if (currentPath.includes('site_pure')) {
+          // GitHub Pages环境
+          jsonPath = `/site_pure/articles/${lang}-articles.json`;
+        } else if (currentPath.includes('/articles/')) {
+          // 在articles子目录中
+          jsonPath = `../${lang}-articles.json`;
+        } else {
+          // 其他情况
+          jsonPath = `./articles/${lang}-articles.json`;
+        }
           
+        console.log('Fetching articles from:', jsonPath); // 添加调试日志
         const response = await fetch(jsonPath);
         if (response.ok) {
           articles = await response.json();
           articles = articles.map(article => ({...article, lang}));
+        } else {
+          console.error('Failed to fetch articles:', response.status, response.statusText);
         }
       } catch (error) {
         console.error(`Error loading ${lang} articles:`, error);
@@ -160,8 +171,9 @@ async function loadArticles() {
 // 获取当前语言
 function getCurrentLanguage() {
   const currentPath = window.location.pathname;
-  if (currentPath.includes('/en/') || currentPath.includes('/articles/en')) return 'en';
-  if (currentPath.includes('/jp/') || currentPath.includes('/articles/jp')) return 'jp';
+  if (currentPath.includes('/articles/en/') || currentPath.includes('/en/')) return 'en';
+  if (currentPath.includes('/articles/jp/') || currentPath.includes('/jp/')) return 'jp';
+  if (currentPath.includes('/articles/zh/') || currentPath.includes('/zh/')) return 'zh';
   return 'zh';
 }
 
