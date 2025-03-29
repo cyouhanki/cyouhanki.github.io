@@ -177,9 +177,9 @@ function getCurrentLanguage() {
   return 'zh';
 }
 
-// 页面加载完成后执行
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM Content Loaded');
+// 页面加载完成后初始化
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM Content Loaded - initializing components');
     
     // 初始化移动端菜单
     initMobileMenu();
@@ -192,6 +192,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // 加载文章
     loadArticles();
+    
+    // 初始化技能条动画
+    initSkillBars();
     
     // 初始化时间和空间分布图表（如果存在）
     if (document.getElementById('timeChart')) {
@@ -705,23 +708,4 @@ function initSkillBars() {
     skillItems.forEach(item => {
         observer.observe(item);
     });
-}
-
-// 页面加载完成后初始化
-document.addEventListener('DOMContentLoaded', function() {
-    // 移动端菜单切换
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    
-    if (menuToggle) {
-        menuToggle.addEventListener('click', function() {
-            this.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        });
-    }
-    
-    // 初始化技能条动画
-    initSkillBars();
-    
-    // 其他已有的初始化代码...
-}); 
+} 

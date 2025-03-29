@@ -69,6 +69,8 @@ nav {
     display: flex;
     align-items: center;
     gap: 30px;
+    position: relative;
+    z-index: 1001;
 }
 
 .nav-links {
@@ -102,7 +104,7 @@ nav {
     background: transparent;
     border: none;
     cursor: pointer;
-    z-index: 1001;
+    z-index: 1002;
     padding: 0;
     margin-left: 20px;
     position: relative;
@@ -115,6 +117,7 @@ nav {
     background-color: #333;
     border-radius: 2px;
     transition: all 0.3s ease;
+    pointer-events: none;
 }
 
 /* 移动端菜单按钮激活状态 */
@@ -151,6 +154,16 @@ main {
 @media (max-width: 768px) {
     .menu-toggle {
         display: flex;
+    }
+
+    .menu-toggle::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        z-index: -1;
     }
 
     .nav-right {
