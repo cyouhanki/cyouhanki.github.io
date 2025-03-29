@@ -4,10 +4,10 @@
   "description": "个人网站",
   "main": "index.js",
   "scripts": {
-    "serve": "http-server ./public -p 3000",
+    "serve": "http-server ./ -p 3000",
     "dev": "node server.js",
     "start": "node server.js",
-    "generate": "node public/js/generate-articles.js",
+    "generate": "node scripts/generate-articles.js",
     "watch": "node scripts/watch.js"
   },
   "author": "",
