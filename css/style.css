@@ -97,34 +97,38 @@ nav {
     display: none;
     flex-direction: column;
     justify-content: space-between;
-    width: 30px;
-    height: 20px;
+    width: 24px;
+    height: 18px;
     background: transparent;
     border: none;
     cursor: pointer;
-    z-index: 100;
+    z-index: 1001;
     padding: 0;
+    margin-left: 20px;
+    position: relative;
 }
 
 .menu-toggle span {
     display: block;
-    height: 3px;
     width: 100%;
+    height: 2px;
     background-color: #333;
-    border-radius: 3px;
+    border-radius: 2px;
     transition: all 0.3s ease;
 }
 
+/* 移动端菜单按钮激活状态 */
 .menu-toggle.active span:nth-child(1) {
-    transform: translateY(8.5px) rotate(45deg);
+    transform: translateY(8px) rotate(45deg);
 }
 
 .menu-toggle.active span:nth-child(2) {
     opacity: 0;
+    transform: translateX(-10px);
 }
 
 .menu-toggle.active span:nth-child(3) {
-    transform: translateY(-8.5px) rotate(-45deg);
+    transform: translateY(-8px) rotate(-45deg);
 }
 
 /* Main content padding for fixed header */
@@ -145,31 +149,60 @@ main {
 }
 
 @media (max-width: 768px) {
+    .menu-toggle {
+        display: flex;
+    }
+
+    .nav-right {
+        position: relative;
+    }
+
     .nav-links {
+        display: none;
         position: fixed;
-        top: 0;
-        right: -100%;
-        width: 70%;
-        height: 100vh;
-        background-color: #fff;
+        top: 44px;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.98);
+        padding: 20px;
         flex-direction: column;
-        padding: 80px 20px 20px;
-        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-        transition: right 0.3s ease;
-        z-index: 90;
+        align-items: center;
+        gap: 0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     }
 
     .nav-links.active {
-        right: 0;
+        display: flex;
     }
 
     .nav-links a {
-        margin: 10px 0;
-        font-size: 1.2rem;
+        font-size: 16px;
+        padding: 15px 0;
+        width: 100%;
+        text-align: center;
+        color: #333;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        opacity: 0.8;
     }
 
-    .menu-toggle {
-        display: flex;
+    .nav-links a:hover {
+        opacity: 1;
+        background: rgba(0, 0, 0, 0.02);
+    }
+
+    .nav-links a.active {
+        color: #0066cc;
+        font-weight: 500;
+        opacity: 1;
+    }
+
+    .nav-links a:last-child {
+        border-bottom: none;
     }
 }
 

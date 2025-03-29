@@ -45,7 +45,7 @@
     <footer>
         <p>&copy; 2025 Cyouhanki's Home. All rights reserved.</p>
     </footer>
-
+    <script src="../../js/main.js"></script>
     <script>
         let allArticles = [];
         let currentLang = 'all';
@@ -145,17 +145,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadAllArticles();
             
-            // 初始化移动端菜单
-            const menuToggle = document.querySelector('.menu-toggle');
-            const navLinks = document.querySelector('.nav-links');
-            
-            if (menuToggle && navLinks) {
-                menuToggle.addEventListener('click', () => {
-                    menuToggle.classList.toggle('active');
-                    navLinks.classList.toggle('active');
-                });
-            }
-
             // 初始化语言切换
             const langButtons = document.querySelectorAll('.lang-btn');
             langButtons.forEach(btn => {

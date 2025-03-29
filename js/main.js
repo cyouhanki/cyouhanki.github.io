@@ -550,14 +550,56 @@ function loadBooks() {
 // 移动端菜单切换
 function initMobileMenu() {
     const menuToggle = document.querySelector('.menu-toggle');
-  const navLinks = document.querySelector('.nav-links');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (!menuToggle || !navLinks) {
+        console.error('Menu elements not found:', {
+            menuToggle: !!menuToggle,
+            navLinks: !!navLinks
+        });
+        return;
+    }
 
-  if (!menuToggle || !navLinks) return;
+    console.log('Initializing mobile menu');
 
-    menuToggle.addEventListener('click', () => {
-        menuToggle.classList.toggle('active');
-    navLinks.classList.toggle('active');
-  });
+    // 点击菜单按钮时
+    menuToggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Menu button clicked');
+        
+        const isActive = this.classList.contains('active');
+        this.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        
+        console.log('Menu state:', {
+            isActive: !isActive,
+            menuToggleActive: this.classList.contains('active'),
+            navLinksActive: navLinks.classList.contains('active')
+        });
+    });
+
+    // 点击导航链接时关闭菜单
+    const links = navLinks.querySelectorAll('a');
+    links.forEach(link => {
+        link.addEventListener('click', function() {
+            console.log('Navigation link clicked');
+            menuToggle.classList.remove('active');
+            navLinks.classList.remove('active');
+        });
+    });
+
+    // 点击页面其他区域时关闭菜单
+    document.addEventListener('click', function(e) {
+        if (!menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
+            const isMenuActive = navLinks.classList.contains('active');
+            if (isMenuActive) {
+                console.log('Clicking outside menu');
+                menuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            }
+        }
+    });
 }
 
 // 初始化分类标签点击事件

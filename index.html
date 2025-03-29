@@ -24,12 +24,12 @@
             <div class="nav-right">
                 <div class="nav-links">
                     <a href="./" class="active">首页</a>
-                    <a href="./articles/all/index.html">所有文章</a>
-                    <a href="./articles/zh/index.html">中文</a>
-                    <a href="./articles/en/index.html">En</a>
-                    <a href="./articles/jp/index.html">日本語</a>
+                    <a href="./articles/all">所有文章</a>
+                    <a href="./articles/zh">中文</a>
+                    <a href="./articles/en">En</a>
+                    <a href="./articles/jp">日本語</a>
                 </div>
-                <button class="menu-toggle">
+                <button class="menu-toggle" aria-label="菜单">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -252,22 +252,11 @@
         <p>&copy; 2025 Cyouhanki's Home. All rights reserved.</p>
     </footer>
 
-    <script src="js/main.js"></script>
+    <script src="./js/main.js"></script>
     <script src="js/charts.js"></script>
     <script src="js/books.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // 移动端菜单切换
-            const menuToggle = document.querySelector('.menu-toggle');
-            const navLinks = document.querySelector('.nav-links');
-            
-            if (menuToggle && navLinks) {
-                menuToggle.addEventListener('click', function() {
-                    menuToggle.classList.toggle('active');
-                    navLinks.classList.toggle('active');
-                });
-            }
-
             // 地图初始化
             const map = L.map('map').setView([43.0618, 141.3545], 13);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
