@@ -10,14 +10,14 @@ async function loadArticles() {
     
     // 根据页面类型决定加载哪些文章
     if (currentPath === '/' || currentPath === '/index.html' || 
-        currentPath === '/cyouhanki.github.io/' || currentPath === '/cyouhanki.github.io/index.html') {
+        currentPath === '/site_pure/' || currentPath === '/site_pure/index.html') {
       // 首页：加载所有语言的最新文章
       const languages = ['zh', 'en', 'jp'];
       for (const lang of languages) {
         try {
-          // 在GitHub Pages上使用相对路径
-          const jsonPath = currentPath.includes('cyouhanki.github.io') ? 
-            `articles/${lang}-articles.json` : 
+          // 根据环境使用不同的路径
+          const jsonPath = currentPath.includes('site_pure') ? 
+            `/site_pure/articles/${lang}-articles.json` : 
             `./articles/${lang}-articles.json`;
             
           const response = await fetch(jsonPath);
@@ -33,9 +33,9 @@ async function loadArticles() {
       // 语言特定页面：只加载对应语言的文章
       const lang = getCurrentLanguage();
       try {
-        // 从当前页面的相对位置获取JSON
-        const jsonPath = currentPath.includes('/articles/') ? 
-          `${lang}-articles.json` : 
+        // 根据环境使用不同的路径
+        const jsonPath = currentPath.includes('site_pure') ? 
+          `/site_pure/articles/${lang}-articles.json` : 
           `./articles/${lang}-articles.json`;
           
         const response = await fetch(jsonPath);
@@ -72,7 +72,7 @@ async function loadArticles() {
       
       // 只在首页显示语言标签
       const langHtml = currentPath === '/' || currentPath === '/index.html' || 
-        currentPath.includes('cyouhanki.github.io') ? 
+        currentPath.includes('site_pure') ? 
         `<span class="article-lang">${{
             'zh': '中文',
             'en': 'English',
@@ -80,14 +80,13 @@ async function loadArticles() {
           }[article.lang]}</span>` : 
         '';
       
-      // 在首页和GitHub Pages上使用不同的路径格式
+      // 根据环境使用不同的路径
       let articleLink = '';
       if (currentPath === '/' || currentPath === '/index.html') {
         articleLink = `./articles/${article.lang}/${article.slug}.html`;
-      } else if (currentPath.includes('cyouhanki.github.io')) {
-        articleLink = `articles/${article.lang}/${article.slug}.html`;
+      } else if (currentPath.includes('site_pure')) {
+        articleLink = `/site_pure/articles/${article.lang}/${article.slug}.html`;
       } else {
-        // 其他页面使用相对路径
         articleLink = `../${article.lang}/${article.slug}.html`;
       }
       
@@ -122,8 +121,8 @@ async function loadArticles() {
     let allArticlesLink = '';
     if (currentPath === '/' || currentPath === '/index.html') {
       allArticlesLink = './articles/all';
-    } else if (currentPath.includes('cyouhanki.github.io')) {
-      allArticlesLink = 'articles/all';
+    } else if (currentPath.includes('site_pure')) {
+      allArticlesLink = '/site_pure/articles/all';
     } else {
       // 其他页面使用相对路径
       allArticlesLink = '../all';
@@ -161,14 +160,8 @@ async function loadArticles() {
 // 获取当前语言
 function getCurrentLanguage() {
   const currentPath = window.location.pathname;
-  if (currentPath.includes('/en/') || currentPath.includes('/articles/en') || 
-      currentPath.includes('/cyouhanki.github.io/en/') || currentPath.includes('/cyouhanki.github.io/articles/en')) {
-    return 'en';
-  }
-  if (currentPath.includes('/jp/') || currentPath.includes('/articles/jp') ||
-      currentPath.includes('/cyouhanki.github.io/jp/') || currentPath.includes('/cyouhanki.github.io/articles/jp')) {
-    return 'jp';
-  }
+  if (currentPath.includes('/en/') || currentPath.includes('/articles/en')) return 'en';
+  if (currentPath.includes('/jp/') || currentPath.includes('/articles/jp')) return 'jp';
   return 'zh';
 }
 

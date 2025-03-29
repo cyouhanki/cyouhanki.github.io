@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     output: 'export',
-    // 如果你的仓库不是部署在根目录，可能需要设置 basePath
-    // basePath: '/你的仓库名',
+    basePath: '/site_pure',
     images: {
       unoptimized: true,
     },
