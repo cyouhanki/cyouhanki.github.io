@@ -1,10 +1,18 @@
 [
   {
     "title": "テスト記事",
-    "date": "2024-03-30",
+    "date": "2024-03-30T00:00:00.000Z",
     "category": "テスト",
     "excerpt": "これはテスト記事です",
     "slug": "test-article",
-    "lastUpdated": 1743296077583
+    "lang": "jp"
+  },
+  {
+    "title": "テスト日本語記事",
+    "date": "2023-04-03",
+    "category": "テスト",
+    "excerpt": "これは日本語のテスト記事です",
+    "slug": "test_jp",
+    "lang": "jp"
   }
 ]

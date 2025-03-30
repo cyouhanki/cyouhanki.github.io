@@ -18,6 +18,15 @@ const watcher = chokidar.watch(`${ARTICLES_DIR}/**/*.md`, {
 async function handleFileChange(filePath, eventType) {
     console.log(`检测到文件${eventType === 'unlink' ? '删除' : '变化'}: ${filePath}`);
     
+    // 检查是否是任何语言目录下的 index.md 文件，如果是，则不触发重新生成
+    const fileName = path.basename(filePath);
+    const dirName = path.basename(path.dirname(filePath));
+    
+    if (fileName === 'index.md' && (dirName === 'jp' || dirName === 'en' || dirName === 'zh')) {
+        console.log(`跳过处理 ${dirName}/index.md 文件变化，以避免覆盖 ${dirName}/index.html`);
+        return;
+    }
+    
     // 如果是删除事件，清理对应的 HTML 文件
     if (eventType === 'unlink') {
         try {

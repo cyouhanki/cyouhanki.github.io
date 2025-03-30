@@ -30,6 +30,12 @@ async function generateArticles() {
                     const html = marked(markdown);
                     const slug = path.basename(file, '.md');
 
+                    // 跳过 index.md 文件，避免覆盖现有的 index.html
+                    if (slug === 'index' && (lang === 'jp' || lang === 'en' || lang === 'zh')) {
+                        console.log(`跳过生成 ${lang}/index.html 以避免覆盖`);
+                        continue;
+                    }
+
                     // 生成文章对象
                     const article = {
                         title: data.title,
@@ -55,10 +61,23 @@ async function generateArticles() {
                 const jsonPath = path.join(ARTICLES_DIR, `${lang}-articles.json`);
                 await fs.writeFile(jsonPath, JSON.stringify(articles, null, 2));
                 
-                // 为每种语言创建索引页
-                const indexHtml = generateLanguageIndexPage(lang, articles);
+                // 跳过创建 zh/index.html 文件
+                if (lang === 'zh') {
+                    console.log(`跳过创建 zh/index.html 文件`);
+                    continue;
+                }
+                
+                // 检查索引页是否存在，如果不存在则创建
                 const indexPath = path.join(langDir, 'index.html');
-                await fs.writeFile(indexPath, indexHtml);
+                try {
+                    await fs.access(indexPath);
+                    console.log(`保留已存在的 ${lang}/index.html`);
+                } catch (error) {
+                    // 文件不存在，创建默认索引页
+                    console.log(`创建默认的 ${lang}/index.html`);
+                    const indexHtml = generateLanguageIndexPage(lang, articles);
+                    await fs.writeFile(indexPath, indexHtml);
+                }
 
             } catch (err) {
                 if (err.code === 'ENOENT') {
@@ -98,6 +117,10 @@ function generateHtml(article, content) {
     const homePath = `../../`;
     const articlesPath = `../`;
 
+    // 根据文章语言设置导航链接文本
+    const homeText = article.lang === 'zh' ? '首页' : (article.lang === 'jp' ? 'ホーム' : 'Home');
+    const allArticlesText = article.lang === 'zh' ? '所有文章' : (article.lang === 'jp' ? '記事一覧' : 'All Articles');
+
     return `<!DOCTYPE html>
 <html lang="${article.lang}">
 <head>
@@ -115,9 +138,8 @@ function generateHtml(article, content) {
             </div>
             <div class="nav-right">
                 <div class="nav-links">
-                    <a href="${homePath}">首页</a>
-                    <a href="${articlesPath}all">所有文章</a>
-                    <a href="${articlesPath}zh">中文</a>
+                    <a href="${homePath}">${homeText}</a>
+                    <a href="${articlesPath}all">${allArticlesText}</a>
                     <a href="${articlesPath}en">En</a>
                     <a href="${articlesPath}jp">日本語</a>
                 </div>
@@ -173,6 +195,10 @@ function generateLanguageIndexPage(lang, articles) {
         'jp': '日本語記事'
     }[lang] || '文章列表';
     
+    // 根据语言设置导航链接文本
+    const homeText = lang === 'zh' ? '首页' : (lang === 'jp' ? 'ホーム' : 'Home');
+    const allArticlesText = lang === 'zh' ? '所有文章' : (lang === 'jp' ? '記事一覧' : 'All Articles');
+    
     // 生成文章列表HTML
     let articlesHtml = '';
     
@@ -225,9 +251,8 @@ function generateLanguageIndexPage(lang, articles) {
             </div>
             <div class="nav-right">
                 <div class="nav-links">
-                    <a href="../../">首页</a>
-                    <a href="../all">所有文章</a>
-                    <a href="../zh" ${lang === 'zh' ? 'class="active"' : ''}>中文</a>
+                    <a href="../../">${homeText}</a>
+                    <a href="../all">${allArticlesText}</a>
                     <a href="../en" ${lang === 'en' ? 'class="active"' : ''}>En</a>
                     <a href="../jp" ${lang === 'jp' ? 'class="active"' : ''}>日本語</a>
                 </div>
@@ -290,7 +315,6 @@ function generateAllArticlesPage() {
                 <div class="nav-links">
                     <a href="../../">首页</a>
                     <a href="../all" class="active">所有文章</a>
-                    <a href="../zh">中文</a>
                     <a href="../en">En</a>
                     <a href="../jp">日本語</a>
                 </div>

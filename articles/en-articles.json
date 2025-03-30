@@ -1,10 +1,18 @@
 [
   {
     "title": "Test Article",
-    "date": "2024-03-30",
+    "date": "2024-03-30T00:00:00.000Z",
     "category": "Test",
     "excerpt": "This is a test article",
     "slug": "test-article",
-    "lastUpdated": 1743296077583
+    "lang": "en"
+  },
+  {
+    "title": "Test English Article",
+    "date": "2023-04-02",
+    "category": "Test",
+    "excerpt": "This is a test article in English",
+    "slug": "test_en",
+    "lang": "en"
   }
 ]

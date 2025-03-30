@@ -1,0 +1,34 @@
+检测到文件变化: /Users/cyouhanki/workingPlace/site_pure/articles/zh/test_zh.md
+检测到文件变化: /Users/cyouhanki/workingPlace/site_pure/articles/jp/test-article.md
+检测到文件变化: /Users/cyouhanki/workingPlace/site_pure/articles/jp/test_jp.md
+检测到文件变化: /Users/cyouhanki/workingPlace/site_pure/articles/en/test-article.md
+检测到文件变化: /Users/cyouhanki/workingPlace/site_pure/articles/en/test_en.md
+初始化完成，开始监听文件变化...
+监听目录: /Users/cyouhanki/workingPlace/site_pure/articles
+更新成功: 跳过创建 zh/index.html 文件
+保留已存在的 en/index.html
+保留已存在的 jp/index.html
+文章生成完成
+
+更新成功: 跳过创建 zh/index.html 文件
+保留已存在的 en/index.html
+保留已存在的 jp/index.html
+文章生成完成
+
+更新成功: 跳过创建 zh/index.html 文件
+保留已存在的 en/index.html
+保留已存在的 jp/index.html
+文章生成完成
+
+更新成功: 跳过创建 zh/index.html 文件
+保留已存在的 en/index.html
+保留已存在的 jp/index.html
+文章生成完成
+
+更新成功: 跳过创建 zh/index.html 文件
+保留已存在的 en/index.html
+保留已存在的 jp/index.html
+文章生成完成
+
+检测到文件变化: /Users/cyouhanki/workingPlace/site_pure/articles/zh/index.md
+跳过处理 zh/index.md 文件变化，以避免覆盖 zh/index.html
