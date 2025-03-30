@@ -1,223 +1,14 @@
-const fs = require('fs');
-const path = require('path');
-const matter = require('gray-matter');
-const { marked } = require('marked');
-
-const LANGUAGES = ['zh', 'en', 'jp'];
-const BASE_DIR = path.resolve(__dirname, '..');
-const ARTICLES_DIR = path.join(BASE_DIR, 'articles');
-
-// 解析文章元数据
-function parseArticleMetadata(content, filePath) {
-    // 使用 gray-matter 解析 frontmatter
-    const { data, content: markdownContent } = matter(content);
-    
-    // 提取文件名（不含扩展名）作为 slug
-    const fileName = path.basename(filePath, path.extname(filePath));
-    
-    // 提取语言信息
-    const dirName = path.basename(path.dirname(filePath));
-    
-    // 构建文章对象
-    const article = {
-        title: data.title || '无标题',
-        date: data.date ? new Date(data.date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
-        category: data.category || '未分类',
-        excerpt: data.excerpt || '无摘要',
-        slug: fileName,
-        lang: dirName,
-        content: markdownContent
-    };
-    
-    return article;
-}
-
-// 处理单个 Markdown 文件生成对应的 HTML
-function processMarkdownFile(filePath) {
-    try {
-        // 跳过 index.md 文件，避免覆盖已有的 index.html
-        if (path.basename(filePath) === 'index.md') {
-            console.log(`跳过处理 index.md 文件: ${filePath}`);
-            return null;
-        }
-        
-        // 读取 Markdown 文件内容
-        const mdContent = fs.readFileSync(filePath, 'utf8');
-        
-        // 解析文章元数据和内容
-        const article = parseArticleMetadata(mdContent, filePath);
-        
-        // 将 Markdown 内容转换为 HTML
-        const htmlContent = marked(article.content);
-        
-        // 生成完整的 HTML 文件
-        const fullHtml = generateHtml(article, htmlContent);
-        
-        // 确定输出路径
-        const outputPath = filePath.replace('.md', '.html');
-        
-        // 写入 HTML 文件
-        fs.writeFileSync(outputPath, fullHtml);
-        
-        console.log(`生成 HTML 文件: ${outputPath}`);
-        
-        return article; // 返回文章对象，以便进一步处理
-    } catch (error) {
-        console.error(`处理文件 ${filePath} 时出错:`, error);
-        return null;
-    }
-}
-
-// 生成特定语言的文章 JSON 数据（不生成 index.html）
-function generateLanguageData(lang) {
-    try {
-        // 获取该语言下的所有 Markdown 文件
-        const langDir = path.join(ARTICLES_DIR, lang);
-        let files;
-        
-        try {
-            files = fs.readdirSync(langDir);
-        } catch (error) {
-            console.error(`读取目录 ${langDir} 失败:`, error);
-            return [];
-        }
-        
-        // 过滤出 .md 文件，但排除 index.md
-        const mdFiles = files.filter(file => 
-            file.endsWith('.md') && file !== 'index.md'
-        );
-        
-        // 解析每个文件，提取元数据
-        const articles = [];
-        
-        for (const file of mdFiles) {
-            const filePath = path.join(langDir, file);
-            try {
-                const content = fs.readFileSync(filePath, 'utf8');
-                const article = parseArticleMetadata(content, filePath);
-                articles.push(article);
-            } catch (error) {
-                console.error(`解析文件 ${filePath} 时出错:`, error);
-            }
-        }
-        
-        // 按日期降序排序（最新的文章在前）
-        articles.sort((a, b) => new Date(b.date) - new Date(a.date));
-        
-        // 保存 JSON 数据
-        const jsonPath = path.join(ARTICLES_DIR, `${lang}-articles.json`);
-        fs.writeFileSync(jsonPath, JSON.stringify(articles, null, 2));
-        console.log(`生成 ${lang} 语言文章数据: ${jsonPath}`);
-        
-        return articles;
-    } catch (error) {
-        console.error(`生成 ${lang} 语言文章数据时出错:`, error);
-        return [];
-    }
-}
-
-// 主函数
-function main() {
-    // 确保文章目录存在
-    if (!fs.existsSync(ARTICLES_DIR)) {
-        console.error(`文章目录不存在: ${ARTICLES_DIR}`);
-        return;
-    }
-    
-    // 处理每种语言的文章
-    for (const lang of LANGUAGES) {
-        const langDir = path.join(ARTICLES_DIR, lang);
-        
-        // 确保语言目录存在
-        if (!fs.existsSync(langDir)) {
-            console.log(`创建语言目录: ${langDir}`);
-            fs.mkdirSync(langDir, { recursive: true });
-        }
-        
-        // 读取该语言下的所有 Markdown 文件
-        try {
-            const files = fs.readdirSync(langDir);
-            const mdFiles = files.filter(file => file.endsWith('.md') && file !== 'index.md');
-            
-            console.log(`${lang} 语言文章数量: ${mdFiles.length}`);
-            
-            // 解析每个文件并生成 HTML
-            const articles = [];
-            
-            for (const file of mdFiles) {
-                const filePath = path.join(langDir, file);
-                const article = processMarkdownFile(filePath);
-                if (article) {
-                    articles.push(article);
-                }
-            }
-            
-            // 生成语言文章数据（不生成 index.html）
-            generateLanguageData(lang);
-            
-        } catch (error) {
-            console.error(`处理 ${lang} 语言文章时出错:`, error);
-        }
-    }
-    
-    console.log('所有文章处理完成');
-}
-
-// 如果作为独立脚本运行
-if (require.main === module) {
-    main();
-}
-
-// 导出函数供其他模块使用
-module.exports = {
-    processMarkdownFile,
-    generateLanguageData,
-    generateHtml,
-    parseArticleMetadata
-};
-
-function generateHtml(article, content) {
-    // 根据语言动态计算相对路径
-    const cssPath = `../../css`;
-    const homePath = `../../`;
-    const articlesPath = `../`;
-
-    // 根据文章语言设置导航链接文本
-    const homeText = article.lang === 'zh' ? '首页' : (article.lang === 'jp' ? 'ホーム' : 'Home');
-    const allArticlesText = article.lang === 'zh' ? '所有文章' : (article.lang === 'jp' ? '記事一覧' : 'All Articles');
-    
-    // 为目录提取标题
-    const headings = content.match(/<h[1-2] id="(.+?)">(.+?)<\/h[1-2]>/g) || [];
-    const tocItems = headings.map(heading => {
-        const match = heading.match(/<h[1-2] id="(.+?)">(.+?)<\/h[1-2]>/);
-        if (match && match.length >= 3) {
-            return {
-                id: match[1],
-                text: match[2]
-            };
-        }
-        return null;
-    }).filter(item => item !== null);
-    
-    // 生成目录 HTML
-    const tocHtml = tocItems.map(item => 
-        `<li><a href="#${item.id}">${item.text}</a></li>`
-    ).join('\n            ');
-    
-    // 目录标题文本根据语言设置
-    const tocTitle = article.lang === 'zh' ? '目录' : (article.lang === 'jp' ? '目次' : 'Table of Contents');
-
-    return `<!DOCTYPE html>
-<html lang="${article.lang}">
+<!DOCTYPE html>
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>${article.title} - Cyouhanki's Home</title>
-    <link rel="stylesheet" href="${cssPath}/style.css">
-    <link rel="stylesheet" href="${cssPath}/article.css">
+    <title>AI:只服务于有目标的人 - Cyouhanki's Home</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/article.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -291,14 +82,14 @@ function generateHtml(article, content) {
         }
 
         .article-date::before {
-            content: '\\f133';
+            content: '\f133';
             font-family: 'Font Awesome 6 Free';
             font-weight: 400;
             margin-right: 0.5rem;
         }
 
         .article-category::before {
-            content: '\\f07b';
+            content: '\f07b';
             font-family: 'Font Awesome 6 Free';
             font-weight: 400;
             margin-right: 0.5rem;
@@ -657,14 +448,14 @@ function generateHtml(article, content) {
     <header>
         <nav>
             <div class="nav-left">
-                <a href="${homePath}" class="logo">Cyouhanki's Home</a>
+                <a href="../../" class="logo">Cyouhanki's Home</a>
             </div>
             <div class="nav-right">
                 <div class="nav-links">
-                    <a href="${homePath}">${homeText}</a>
-                    <a href="${articlesPath}all">${allArticlesText}</a>
-                    <a href="${articlesPath}en"${article.lang === 'en' ? ' class="active"' : ''}>English</a>
-                    <a href="${articlesPath}jp"${article.lang === 'jp' ? ' class="active"' : ''}>日本語</a>
+                    <a href="../../">首页</a>
+                    <a href="../all">所有文章</a>
+                    <a href="../en">English</a>
+                    <a href="../jp">日本語</a>
                 </div>
                 <button id="menuToggleBtn" class="menu-toggle" aria-label="メニュー" aria-expanded="false" aria-controls="nav-links">
                     <span></span>
@@ -681,25 +472,56 @@ function generateHtml(article, content) {
 
     <main class="article-content">
         <article>
-            <h1>${article.title}</h1>
+            <h1>AI:只服务于有目标的人</h1>
             <div class="article-meta">
-                <span class="article-date">${article.date}</span>
-                <span class="article-category">${article.category}</span>
+                <span class="article-date">2025-03-30</span>
+                <span class="article-category">感想</span>
             </div>
             <div class="article-body">
-                ${content}
+                <h1 id="ai只服务于有目标的人">AI:只服务于有目标的人</h1>
+<p>最近因为在找工作，需要一个作品来表现自己，所以在上周24号开始，到今天为止，这个网站临时做出来了。
+本网站的所有代码在 cyouhanki.github 上，全部使用 CSS+HTML+JS，生成的静态网站。</p>
+<p>未来可能会加入美观实用的动画、3D 效果。</p>
+<h2 id="建站过程中的问题">建站过程中的问题</h2>
+<p>这次建站出现了两个问题：</p>
+<ol>
+<li>原先网站的 Hexo 服务器，最后不能使用。貌似生成了无限迭代的文件夹。</li>
+<li>AI 助手给予太多的权利，然后删库跑路（发生了两次，笑）。</li>
+</ol>
+<h2 id="经验总结">经验总结</h2>
+<p>针对于这两个发生过的问题，我写下了这篇文章分享经验。</p>
+<p>2018年我接触了 Hexo+GitHub，并且曾经建了一个静态博客。在2025年我也想方便地通过 Hexo 重新建站，然后被 Hexo 背刺。</p>
+<p>于是我转向了 Cursor 和 DeepSeek，考虑从 AI 助手的角度，从零开始重新建站。</p>
+<p><strong>技术要求</strong>：了解 HTML、CSS、JS 的基本用途就可以了。</p>
+<p>在 AI 使用过程中，我在前两天非常依赖于 Cursor，给予了 AI 很大的权限，包括根目录检索、文件删除、文件添加。所以在28号早上，Cursor 删库了。</p>
+<p>之后调整了方式，在 AI 助手写代码的时候，我告诉他修改哪个文件，不给予他修改代码之外的权利。然后在连接自己的库的时候，交给了 AI 助手，然后他删库了（二次）。</p>
+<h2 id="个人体会">个人体会</h2>
+<p>我的体验是：</p>
+<ol>
+<li>AI 技术能够做出很优秀的项目</li>
+<li>但是在使用 AI 技术的时候你本身要有知识储备，至少要有一个大框架</li>
+<li>要有耐心</li>
+</ol>
+<hr>
+<p>以上，如果有工作的话可以联系我！我真的很珍惜每一次的机会。 </p>
+<h1 id="test-update">Test Update</h1>
+
             </div>
         </article>
     </main>
 
-    ${tocItems.length > 0 ? `
+    
     <aside class="article-toc">
-        <div class="toc-title">${tocTitle}</div>
+        <div class="toc-title">目录</div>
         <ul class="toc-list">
-            ${tocHtml}
+            <li><a href="#ai只服务于有目标的人">AI:只服务于有目标的人</a></li>
+            <li><a href="#建站过程中的问题">建站过程中的问题</a></li>
+            <li><a href="#经验总结">经验总结</a></li>
+            <li><a href="#个人体会">个人体会</a></li>
+            <li><a href="#test-update">Test Update</a></li>
         </ul>
     </aside>
-    ` : ''}
+    
 
     <button class="back-to-top" id="backToTop">
         <i class="fas fa-arrow-up"></i>
@@ -916,5 +738,4 @@ function generateHtml(article, content) {
         });
     </script>
 </body>
-</html>`;
-} 
+</html>
