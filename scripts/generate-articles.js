@@ -346,7 +346,7 @@ function generateAllArticlesPage() {
 
     <script>
         let allArticles = [];
-        let currentLang = 'all';
+        let currentLang = 'all'; // 默认显示所有语言的文章
 
         // 加载所有文章
         async function loadAllArticles() {
@@ -358,22 +358,28 @@ function generateAllArticlesPage() {
                 allArticles = [];
                 
                 // 获取所有语言的文章并合并
+                let loadSuccess = false;
                 for (const lang of languages) {
                     try {
                         const response = await fetch('../' + lang + '-articles.json');
                         if (response.ok) {
                             const articles = await response.json();
                             allArticles = allArticles.concat(articles.map(article => ({...article, lang})));
+                            loadSuccess = true; // 至少成功加载了一种语言的文章
                         }
                     } catch (error) {
                         console.error('Error loading ' + lang + ' articles:', error);
                     }
                 }
                 
+                if (!loadSuccess) {
+                    throw new Error('无法加载任何文章');
+                }
+                
                 // 按日期排序
                 allArticles.sort((a, b) => new Date(b.date) - new Date(a.date));
                 
-                // 显示文章
+                // 显示文章 - 确保显示所有语言的文章
                 displayArticles();
             } catch (error) {
                 console.error('Error loading articles:', error);
@@ -387,6 +393,11 @@ function generateAllArticlesPage() {
         // 显示文章
         function displayArticles() {
             const articlesContainer = document.querySelector('.articles-list');
+            // 确保 currentLang 有效，如果不是有效值，则默认为 'all'
+            if (!['all', 'zh', 'en', 'jp'].includes(currentLang)) {
+                currentLang = 'all';
+            }
+            
             const filteredArticles = currentLang === 'all' 
                 ? allArticles 
                 : allArticles.filter(article => article.lang === currentLang);
@@ -439,8 +450,6 @@ function generateAllArticlesPage() {
 
         // 页面加载完成后执行
         document.addEventListener('DOMContentLoaded', () => {
-            loadAllArticles();
-            
             // 初始化移动端菜单
             const menuToggle = document.querySelector('.menu-toggle');
             const navLinks = document.querySelector('.nav-links');
@@ -462,6 +471,9 @@ function generateAllArticlesPage() {
                     displayArticles();
                 });
             });
+            
+            // 加载所有文章并显示
+            loadAllArticles();
         });
     </script>
 </body>
