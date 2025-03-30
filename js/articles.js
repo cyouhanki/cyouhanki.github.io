@@ -14,7 +14,9 @@ async function loadArticles() {
     if (!articlesGrid) return;
 
     try {
-        const response = await fetch(`/articles/${lang}-articles.json`);
+        // 添加时间戳防止缓存
+        const timestamp = new Date().getTime();
+        const response = await fetch(`/articles/${lang}-articles.json?t=${timestamp}`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }

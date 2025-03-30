@@ -3,9 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Articles - Cyouhanki's Home</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Cyouhanki's Home</title>
+    <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="../../images/favicon.ico">
+    <link rel="apple-touch-icon" href="../../images/favicon.ico">
     <link rel="stylesheet" href="../../css/style.css">
-    <link rel="stylesheet" href="../../css/article.css">
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Include Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Include Leaflet.js -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
     <header>
@@ -15,13 +26,12 @@
             </div>
             <div class="nav-right">
                 <div class="nav-links">
-                    <a href="../../">首页</a>
-                    <a href="../all">所有文章</a>
-                    <a href="../zh" >中文</a>
-                    <a href="../en" class="active">En</a>
-                    <a href="../jp" >日本語</a>
+                    <a href="../../">Home</a>
+                    <a href="../all">All Articles</a>
+                    <a href="../en/index.html" class="active">English</a>
+                    <a href="../jp/index.html">日本語</a>
                 </div>
-                <button class="menu-toggle">
+                <button class="menu-toggle" aria-label="Menu">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -30,28 +40,161 @@
         </nav>
     </header>
     <main>
-        <div class="articles-container">
-            <h1 class="page-title">English Articles</h1>
-            <div class="articles-list">
-                <div class="articles-grid">
-        <article class="article-card">
-          <a href="test-en.html">
-            <div class="article-card-inner">
-              <h3 class="article-title">ENglish test</h3>
-              <div class="article-meta">
-                <span class="article-date">Fri Mar 29 2024 09:00:00 GMT+0900 (日本标准时间)</span>
-                <span class="article-category">测试</span>
-              </div>
-              <p class="article-excerpt">这是一篇测试文章，用于验证生成功能是否正常工作</p>
+        <section id="home" class="hero">
+            <div class="logo-container">
+                <img src="../../images/self.png" alt="Profile Picture" class="logo-image">
             </div>
-          </a>
-        </article></div>
+            <div class="hero-content">
+                <h1>Welcome to my secret gardening</h1>
+                <h2>Welcome to my secret garden</h2>
+                <h3>I am cyouhanki</h3>
+                <div class="hero-tags">
+                    <span class="hero-tag">Master's in Religious Studies</span>
+                    <span class="hero-tag">Current AI User</span>
+                    <span class="hero-tag">Former Programming Enthusiast</span>
+                    <span class="hero-tag">Always a Pragmatist</span>
+                    <span class="hero-tag">Long-time Digital Fishing Fan</span>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <!-- Skills and Experience Section -->
+        <section id="skills" class="skills-section">
+            <div class="skills-container">
+                <div class="section-header">
+                    <h2>Skills</h2>
+                </div>
+                <div class="skills-grid">
+                    <!-- C#/.NET Skill -->
+                    <div class="skill-item">
+                        <div class="skill-name-container">
+                            <h3 class="skill-name">C# / .NET</h3>
+                            <span class="skill-percentage">65%</span>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-percentage="65"></div>
+                        </div>
+                        <div class="skill-details">
+                            <p>Library Management System (C#＋WPF+MySQL)</p>
+                            <p>2.5D Game Development (C#+Unity3D)</p>
+                        </div>
+                    </div>
+
+                    <!-- Python+Swift Skill -->
+                    <div class="skill-item">
+                        <div class="skill-name-container">
+                            <h3 class="skill-name">Python+Swift</h3>
+                            <span class="skill-percentage">30%</span>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-percentage="30"></div>
+                        </div>
+                        <div class="skill-details">
+                            <p>Currently self-learning</p>
+                        </div>
+                    </div>
+
+                    <!-- English Skill -->
+                    <div class="skill-item">
+                        <div class="skill-name-container">
+                            <h3 class="skill-name">English</h3>
+                            <span class="skill-percentage">70%</span>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-percentage="70"></div>
+                        </div>
+                        <div class="skill-details">
+                            <p>Translation from English to Japanese</p>
+                            <p>Translating a Coptic grammar book</p>
+                            <p>Q&A in English seminars</p>
+                        </div>
+                    </div>
+
+                    <!-- Japanese Skill -->
+                    <div class="skill-item">
+                        <div class="skill-name-container">
+                            <h3 class="skill-name">Japanese</h3>
+                            <span class="skill-percentage">75%</span>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-percentage="75"></div>
+                        </div>
+                        <div class="skill-details">
+                            <p>Confident in writing</p>
+                            <p>Translation and publication of Taiji sword videos</p>
+                            <p>Volunteer experience for international student support events at church</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Time and Space Distribution Section -->
+        <section id="distribution" class="distribution-section">
+            <div class="distribution-container">
+                <div class="time-section">
+                    <h2>Time</h2>
+                    <p>This is how I spend my time. My biggest hobby is learning. I'm curious about everything.</p>
+                    <canvas id="timeChart" class="time-chart"></canvas>
+                </div>
+                <div class="space-section">
+                    <h2>Space</h2>
+                    <p>This is my travel footprint. I currently live in Sapporo, Japan.</p>
+                    <div id="map" class="travel-map"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Books and Articles Container -->
+        <section class="content-section">
+            <div class="content-container">
+
+                <!-- Books Section -->
+                <section id="books" class="books-section">
+                    <div class="section-header">
+                        <h2>Reading List</h2>
+                        <p class="section-description">I've read over 150 books in the past 5 years.<br>Here are some recommendations!</p>
+                    </div>
+                    <div class="book-categories">
+                        <div class="category-tag active" data-count="4">Academic</div>
+                        <div class="category-tag" data-count="2">Fiction</div>
+                    </div>
+                    <div class="books-grid">
+                        <!-- Book cards will be added dynamically with JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Articles Section -->
+                <section id="articles" class="articles-section">
+                    <div class="section-header">
+                        <h2>Latest Articles</h2>
+                        <p class="section-description">Sharing my thoughts and experiences</p>
+                    </div>
+                    <div class="articles-list">
+                        <!-- Article list will be added dynamically with JavaScript -->
+                    </div>
+                </section>
+            </div>
+        </section>
     </main>
+
+    <!-- Footer -->
     <footer>
         <p>&copy; 2025 Cyouhanki's Home. All rights reserved.</p>
     </footer>
+
     <script src="../../js/main.js"></script>
+    <script src="../../js/charts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize map
+            const map = L.map('map').setView([43.0618, 141.3545], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+            const marker = L.marker([31.3, 120.6]).addTo(map);
+        });
+    </script>
 </body>
 </html>

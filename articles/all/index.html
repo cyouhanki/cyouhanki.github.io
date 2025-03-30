@@ -16,9 +16,8 @@
                 <div class="nav-links">
                     <a href="../../">首页</a>
                     <a href="../all" class="active">所有文章</a>
-                    <a href="../zh">中文</a>
-                    <a href="../en">En</a>
-                    <a href="../jp">日本語</a>
+                    <a href="../en/index.html">En</a>
+                    <a href="../jp/index.html">日本語</a>
                 </div>
                 <button class="menu-toggle">
                     <span></span>
@@ -62,10 +61,14 @@
                 // 获取所有语言的文章并合并
                 for (const lang of languages) {
                     try {
+                        console.log(`Loading articles for language: ${lang}`);
                         const response = await fetch(`../${lang}-articles.json`);
                         if (response.ok) {
                             const articles = await response.json();
+                            console.log(`Loaded ${articles.length} articles for ${lang}`);
                             allArticles = allArticles.concat(articles.map(article => ({...article, lang})));
+                        } else {
+                            console.error(`Failed to load ${lang} articles: ${response.status}`);
                         }
                     } catch (error) {
                         console.error(`Error loading ${lang} articles:`, error);
@@ -74,6 +77,7 @@
                 
                 // 按日期排序
                 allArticles.sort((a, b) => new Date(b.date) - new Date(a.date));
+                console.log(`Total articles after sorting: ${allArticles.length}`);
                 
                 // 显示文章
                 displayArticles();

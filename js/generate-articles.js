@@ -7,35 +7,47 @@ const matter = require('gray-matter');
 const languages = ['zh', 'en', 'jp'];
 
 // 项目根目录路径
-const rootDir = path.join(__dirname, '../..');
+const rootDir = path.join(__dirname, '..');
 
 // HTML模板
 function createHtmlTemplate(title, content, language) {
+  // 根据语言确定返回链接文本
+  const backText = {
+    'zh': '返回首页',
+    'en': 'Back to Home',
+    'jp': 'ホームに戻る'
+  }[language] || '返回首页';
+
+  // 根据当前语言设置对应导航链接的active状态
+  const isEnActive = language === 'en' ? 'class="active"' : '';
+  const isJpActive = language === 'jp' ? 'class="active"' : '';
+
   return `<!DOCTYPE html>
 <html lang="${language}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${title} - Cyouhanki's Home</title>
-    <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/article.css">
+    <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="../../images/favicon.ico">
+    <link rel="apple-touch-icon" href="../../images/favicon.ico">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/article.css">
 </head>
 <body>
     <header>
         <nav>
             <div class="nav-left">
-                <a href="./" class="logo">Cyouhanki's Home</a>
+                <a href="../../" class="logo">Cyouhanki's Home</a>
             </div>
             <div class="nav-right">
                 <div class="nav-links">
-                    <a href="./">首页</a>
-                    <a href="./articles/all">所有文章</a>
-                    <a href="./articles/zh" ${language === 'zh' ? 'class="active"' : ''}>中文</a>
-                    <a href="./articles/en" ${language === 'en' ? 'class="active"' : ''}>En</a>
-                    <a href="./articles/jp" ${language === 'jp' ? 'class="active"' : ''}>日本語</a>
+                    <a href="../../">首页</a>
+                    <a href="../all">所有文章</a>
+                    <a href="../../en/" ${isEnActive}>En</a>
+                    <a href="../../jp/" ${isJpActive}>日本語</a>
                 </div>
-                <button class="menu-toggle">
+                <button class="menu-toggle" aria-label="菜单">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -48,13 +60,13 @@ function createHtmlTemplate(title, content, language) {
             ${content}
         </article>
         <div class="back-to-home">
-            <a href="./">返回首页</a>
+            <a href="../../">${backText}</a>
         </div>
     </main>
     <footer>
         <p>&copy; 2025 Cyouhanki's Home. All rights reserved.</p>
     </footer>
-    <script src="./js/main.js"></script>
+    <script src="../../js/main.js"></script>
 </body>
 </html>`;
 }
@@ -62,15 +74,15 @@ function createHtmlTemplate(title, content, language) {
 // 创建文章列表页面
 function createArticleListPage(language, articles) {
   const pageTitle = {
-    zh: '文章列表',
-    en: 'Article List',
-    jp: '記事一覧'
+    zh: '中文文章',
+    en: 'English Articles',
+    jp: '日本語記事'
   }[language] || '文章列表';
 
   const listHeaderText = {
-    zh: '所有文章',
-    en: 'All Articles',
-    jp: '全ての記事'
+    zh: '中文文章',
+    en: 'English Articles',
+    jp: '日本語記事'
   }[language] || '所有文章';
 
   const noArticlesText = {
@@ -89,13 +101,15 @@ function createArticleListPage(language, articles) {
     articles.forEach(article => {
       articlesHtml += `
         <article class="article-card">
-          <a href="./articles/${language}/${article.slug}.html">
-            <h3>${article.title}</h3>
-            <div class="article-meta">
-              <span class="article-date">${article.date}</span>
-              <span class="article-category">${article.category || '未分类'}</span>
+          <a href="${article.slug}.html">
+            <div class="article-card-inner">
+              <h3 class="article-title">${article.title}</h3>
+              <div class="article-meta">
+                <span class="article-date">${article.date}</span>
+                <span class="article-category">${article.category || '未分类'}</span>
+              </div>
+              <p class="article-excerpt">${article.excerpt || '暂无摘要'}</p>
             </div>
-            <p class="article-excerpt">${article.excerpt || '暂无摘要'}</p>
           </a>
         </article>
       `;
@@ -104,30 +118,36 @@ function createArticleListPage(language, articles) {
     articlesHtml += '</div>';
   }
 
+  // 根据当前语言设置对应导航链接的active状态
+  const isEnActive = language === 'en' ? 'class="active"' : '';
+  const isJpActive = language === 'jp' ? 'class="active"' : '';
+
   return `<!DOCTYPE html>
 <html lang="${language}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${pageTitle} - Cyouhanki's Home</title>
-    <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/article.css">
+    <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="../../images/favicon.ico">
+    <link rel="apple-touch-icon" href="../../images/favicon.ico">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/article.css">
 </head>
 <body>
     <header>
         <nav>
             <div class="nav-left">
-                <a href="./" class="logo">Cyouhanki's Home</a>
+                <a href="../../" class="logo">Cyouhanki's Home</a>
             </div>
             <div class="nav-right">
                 <div class="nav-links">
-                    <a href="./">首页</a>
-                    <a href="./articles/zh" ${language === 'zh' ? 'class="active"' : ''}>中文</a>
-                    <a href="./articles/en" ${language === 'en' ? 'class="active"' : ''}>En</a>
-                    <a href="./articles/jp" ${language === 'jp' ? 'class="active"' : ''}>日本語</a>
+                    <a href="../../">首页</a>
+                    <a href="../all">所有文章</a>
+                    <a href="../../en/" ${isEnActive}>En</a>
+                    <a href="../../jp/" ${isJpActive}>日本語</a>
                 </div>
-                <button class="menu-toggle">
+                <button class="menu-toggle" aria-label="菜单">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -146,7 +166,7 @@ function createArticleListPage(language, articles) {
     <footer>
         <p>&copy; 2025 Cyouhanki's Home. All rights reserved.</p>
     </footer>
-    <script src="./js/main.js"></script>
+    <script src="../../js/main.js"></script>
 </body>
 </html>`;
 }
@@ -378,8 +398,19 @@ function createArticleCSS() {
 // 从Markdown文件中提取元数据和内容
 function extractMarkdownInfo(filePath) {
   try {
-    const fileContent = fs.readFileSync(filePath, 'utf8');
+    // 直接使用fs.readFileSync读取文件内容，避免任何缓存问题
+    let fileContent = fs.readFileSync(filePath, 'utf8');
+    console.log(`完整读取文件内容 (${fileContent.length} 字节): ${filePath}`);
+    
+    // 将文件内容输出到临时文件进行调试
+    const debugPath = path.join(rootDir, 'debug_md_content.txt');
+    fs.writeFileSync(debugPath, fileContent);
+    console.log(`调试文件已写入: ${debugPath}`);
+    
+    // 使用gray-matter解析front matter
     const { data, content } = matter(fileContent);
+    console.log(`解析的front matter数据:`, data);
+    console.log(`解析的内容 (${content.length} 字节)`);
     
     // 从文件名提取slug
     const fileName = path.basename(filePath);
@@ -404,6 +435,9 @@ async function generateArticles() {
   // 创建文章样式
   createArticleCSS();
 
+  // 给JSON添加时间戳，避免浏览器缓存
+  const timestamp = new Date().getTime();
+
   // 处理每种语言
   for (const lang of languages) {
     try {
@@ -412,55 +446,110 @@ async function generateArticles() {
       // 读取该语言目录下的所有Markdown文件
       const sourceDir = path.join(rootDir, `articles/${lang}`);
       
+      // 确保语言目录存在
       if (!fs.existsSync(sourceDir)) {
-        console.warn(`未找到文章目录: ${sourceDir}`);
-        continue;
+        console.warn(`未找到文章目录: ${sourceDir}，将创建目录`);
+        fs.mkdirSync(sourceDir, { recursive: true });
       }
       
-      const files = fs.readdirSync(sourceDir);
+      console.log(`开始读取目录: ${sourceDir}`);
+      const files = fs.existsSync(sourceDir) ? fs.readdirSync(sourceDir) : [];
+      console.log(`目录内容: ${files.join(', ')}`);
+      
+      // 收集所有Markdown文件和已存在的HTML文件
       const mdFiles = files.filter(file => file.endsWith('.md'));
+      const htmlFiles = files.filter(file => file.endsWith('.html') && file !== 'index.html');
+      
+      // 创建文章数组，如果没有Markdown文件则为空数组
+      const articles = [];
+      // 记录要保留的HTML文件
+      const validHtmlFiles = new Set();
       
       if (mdFiles.length === 0) {
-        console.warn(`${lang} 语言目录下没有找到Markdown文件`);
-        continue;
-      }
-      
-      // 处理每个Markdown文件，提取元数据
-      const articles = [];
-      
-      for (const file of mdFiles) {
-        const filePath = path.join(sourceDir, file);
-        const articleInfo = extractMarkdownInfo(filePath);
+        console.warn(`${lang} 语言目录下没有找到Markdown文件，将生成空的JSON文件`);
+      } else {
+        console.log(`找到 ${mdFiles.length} 个 Markdown 文件: ${mdFiles.join(', ')}`);
         
-        if (articleInfo) {
-          articles.push(articleInfo);
+        // 处理每个Markdown文件，提取元数据
+        for (const file of mdFiles) {
+          const filePath = path.join(sourceDir, file);
+          
+          console.log(`处理Markdown文件: ${filePath}`);
+          const articleInfo = extractMarkdownInfo(filePath);
+          
+          if (articleInfo) {
+            console.log(`提取的文章信息:`, articleInfo);
+            articles.push(articleInfo);
+            // 记录对应的HTML文件名
+            validHtmlFiles.add(`${articleInfo.slug}.html`);
+          } else {
+            console.error(`无法从文件提取信息: ${filePath}`);
+          }
         }
+        
+        // 按日期排序文章（最新的在前面）
+        articles.sort((a, b) => new Date(b.date) - new Date(a.date));
       }
-      
-      // 按日期排序文章（最新的在前面）
-      articles.sort((a, b) => new Date(b.date) - new Date(a.date));
       
       // 确保输出目录存在
-      const outputDir = path.join(rootDir, `public/articles/${lang}`);
+      const outputDir = path.join(rootDir, `articles/${lang}`);
       if (!fs.existsSync(outputDir)) {
         fs.mkdirSync(outputDir, { recursive: true });
       }
       
-      // 创建文章列表页面
-      const articleListPath = path.join(outputDir, 'index.html');
-      fs.writeFileSync(articleListPath, createArticleListPage(lang, articles));
-      console.log(`创建文章列表页面: ${articleListPath}`);
+      // 清理不再有对应Markdown文件的HTML文件
+      for (const htmlFile of htmlFiles) {
+        if (!validHtmlFiles.has(htmlFile)) {
+          const htmlFilePath = path.join(outputDir, htmlFile);
+          console.log(`删除过期的HTML文件: ${htmlFilePath}`);
+          try {
+            fs.unlinkSync(htmlFilePath);
+          } catch (err) {
+            console.error(`删除文件失败: ${htmlFilePath}`, err);
+          }
+        }
+      }
+      
+      // 不要生成索引页，保留现有的首页
+      // const articleListPath = path.join(outputDir, 'index.html');
+      // fs.writeFileSync(articleListPath, createArticleListPage(lang, articles));
+      // console.log(`创建文章列表页面: ${articleListPath}`);
       
       // 为每篇文章生成HTML文件
       for (const article of articles) {
-        // 转换内容为HTML
+        // 配置marked解析器
+        marked.setOptions({
+          headerIds: true,
+          mangle: false,
+          breaks: true,
+          gfm: true
+        });
+        
+        // 转换内容为HTML，并记录日志
+        console.log(`开始将Markdown转换为HTML: ${article.slug}`);
+        console.log(`Markdown内容前200个字符: ${article.content.substring(0, 200)}`);
         const htmlContent = marked.parse(article.content);
+        console.log(`生成的HTML内容前200个字符: ${htmlContent.substring(0, 200)}`);
         
         // 创建完整HTML页面
         const htmlFilePath = path.join(outputDir, `${article.slug}.html`);
         fs.writeFileSync(htmlFilePath, createHtmlTemplate(article.title, htmlContent, lang));
         console.log(`创建文章HTML: ${htmlFilePath}`);
       }
+      
+      // 始终生成JSON文件，如果没有文章则为空数组
+      const articlesJson = articles.map(article => ({
+        title: article.title,
+        date: article.date,
+        category: article.category,
+        excerpt: article.excerpt,
+        slug: article.slug,
+        lastUpdated: timestamp  // 添加时间戳避免缓存
+      }));
+      
+      const jsonPath = path.join(rootDir, `articles/${lang}-articles.json`);
+      fs.writeFileSync(jsonPath, JSON.stringify(articlesJson, null, 2));
+      console.log(`创建文章JSON: ${jsonPath}，包含 ${articlesJson.length} 篇文章`);
     } catch (error) {
       console.error(`处理 ${lang} 语言文章时出错:`, error);
     }

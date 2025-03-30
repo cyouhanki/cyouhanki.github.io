@@ -3,9 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>日本語記事 - Cyouhanki's Home</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Cyouhanki's Home</title>
+    <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="../../images/favicon.ico">
+    <link rel="apple-touch-icon" href="../../images/favicon.ico">
     <link rel="stylesheet" href="../../css/style.css">
-    <link rel="stylesheet" href="../../css/article.css">
+    <!-- Chart.js追加 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Leaflet CSS追加 -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Leaflet.js追加 -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        .hero {
+            padding: 100px 0 60px;
+            text-align: center;
+            background-color: #f8f9fa;
+            margin-bottom: 60px;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            color: #666;
+        }
+        .feature-section {
+            padding: 60px 0;
+            background-color: #fff;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .feature-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .feature-card h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #4a6cf7;
+        }
+        .about-section {
+            padding: 80px 0;
+            background-color: #f8f9fa;
+        }
+        .about-content {
+            max-width: 800px;
+            margin: 30px auto 0;
+            line-height: 1.8;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .btn-group {
+            margin-top: 30px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #4a6cf7;
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            margin: 0 10px;
+        }
+        .btn:hover {
+            background-color: #3a5bd7;
+        }
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid #4a6cf7;
+            color: #4a6cf7;
+        }
+        .btn-outline:hover {
+            background-color: #4a6cf7;
+            color: white;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.2rem;
+            color: #333;
+        }
+        .articles-section {
+            padding: 60px 0;
+        }
+        .quote-section {
+            background-color: #fff;
+            padding: 50px 0;
+            text-align: center;
+        }
+        .quote {
+            font-size: 1.5rem;
+            font-style: italic;
+            color: #555;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        .quote-author {
+            margin-top: 20px;
+            font-weight: 600;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -15,13 +143,12 @@
             </div>
             <div class="nav-right">
                 <div class="nav-links">
-                    <a href="../../">首页</a>
-                    <a href="../all">所有文章</a>
-                    <a href="../zh" >中文</a>
-                    <a href="../en" >En</a>
-                    <a href="../jp" class="active">日本語</a>
+                    <a href="../../">ホーム</a>
+                    <a href="../all">記事一覧</a>
+                    <a href="../en/index.html">English</a>
+                    <a href="../jp/index.html" class="active">日本語</a>
                 </div>
-                <button class="menu-toggle">
+                <button class="menu-toggle" aria-label="メニュー">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -30,28 +157,161 @@
         </nav>
     </header>
     <main>
-        <div class="articles-container">
-            <h1 class="page-title">日本語記事</h1>
-            <div class="articles-list">
-                <div class="articles-grid">
-        <article class="article-card">
-          <a href="test-jp.html">
-            <div class="article-card-inner">
-              <h3 class="article-title">日本語テスト</h3>
-              <div class="article-meta">
-                <span class="article-date">Fri Mar 29 2024 09:00:00 GMT+0900 (日本标准时间)</span>
-                <span class="article-category">测试</span>
-              </div>
-              <p class="article-excerpt">这是一篇测试文章，用于验证生成功能是否正常工作</p>
+        <section id="home" class="hero">
+            <div class="logo-container">
+                <img src="../../images/self.png" alt="プロフィール画像" class="logo-image">
             </div>
-          </a>
-        </article></div>
+            <div class="hero-content">
+                <h1>Welcome to my secret gardening</h1>
+                <h2>ようこそ、うちの秘密ガーデニングへ</h2>
+                <h3>私はcyouhankiです</h3>
+                <div class="hero-tags">
+                    <span class="hero-tag">宗教学修士卒業</span>
+                    <span class="hero-tag">現在AI利用者</span>
+                    <span class="hero-tag">元プログラミング愛好者</span>
+                    <span class="hero-tag">いつも実用主義者</span>
+                    <span class="hero-tag">長年の電子釣りマニア</span>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <!-- スキルと経験セクション -->
+        <section id="skills" class="skills-section">
+            <div class="skills-container">
+                <div class="section-header">
+                    <h2>スキル</h2>
+                </div>
+                <div class="skills-grid">
+                    <!-- C#/.NETスキル -->
+                    <div class="skill-item">
+                        <div class="skill-name-container">
+                            <h3 class="skill-name">C# / .NET</h3>
+                            <span class="skill-percentage">65%</span>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-percentage="65"></div>
+                        </div>
+                        <div class="skill-details">
+                            <p>図書管理システム (C#＋WPF+MySQL)</p>
+                            <p>2.5Dゲーム開発 (C#+Unity3D)</p>
+                        </div>
+                    </div>
+
+                    <!-- Python+Swiftスキル -->
+                    <div class="skill-item">
+                        <div class="skill-name-container">
+                            <h3 class="skill-name">Python+Swift</h3>
+                            <span class="skill-percentage">30%</span>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-percentage="30"></div>
+                        </div>
+                        <div class="skill-details">
+                            <p>今、独学中</p>
+                        </div>
+                    </div>
+
+                    <!-- 英語スキル -->
+                    <div class="skill-item">
+                        <div class="skill-name-container">
+                            <h3 class="skill-name">English</h3>
+                            <span class="skill-percentage">70%</span>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-percentage="70"></div>
+                        </div>
+                        <div class="skill-details">
+                            <p>英語から日本語で翻訳</p>
+                            <p>コプト語の文法書を翻訳しています。</p>
+                            <p>英語でゼミに質問問答</p>
+                        </div>
+                    </div>
+
+                    <!-- 日本語スキル -->
+                    <div class="skill-item">
+                        <div class="skill-name-container">
+                            <h3 class="skill-name">日本語</h3>
+                            <span class="skill-percentage">75%</span>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-percentage="75"></div>
+                        </div>
+                        <div class="skill-details">
+                            <p>文章作ることに自信ある</p>
+                            <p>太極刀動画を翻訳し公開すること</p>
+                            <p>教会で留学生への支援イベントのボランティア経験</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 時間と空間分布セクション -->
+        <section id="distribution" class="distribution-section">
+            <div class="distribution-container">
+                <div class="time-section">
+                    <h2>Time</h2>
+                    <p>これは私の時間の使い方です。最大の趣味は学習です。あらゆることに好奇心があります。</p>
+                    <canvas id="timeChart" class="time-chart"></canvas>
+                </div>
+                <div class="space-section">
+                    <h2>Space</h2>
+                    <p>これは私の旅行の足跡です。現在は日本の札幌に住んでいます。</p>
+                    <div id="map" class="travel-map"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 書籍と記事のコンテナ -->
+        <section class="content-section">
+            <div class="content-container">
+
+                <!-- 書籍セクション -->
+                <section id="books" class="books-section">
+                    <div class="section-header">
+                        <h2>Reading List</h2>
+                        <p class="section-description">過去5年間で150冊以上の本を読みました。<br>お勧めの本をご紹介します！</p>
+                    </div>
+                    <div class="book-categories">
+                        <div class="category-tag active" data-count="4">専門</div>
+                        <div class="category-tag" data-count="2">小説</div>
+                    </div>
+                    <div class="books-grid">
+                        <!-- 書籍カードはJavaScriptで動的に追加されます -->
+                    </div>
+                </section>
+
+                <!-- 記事セクション -->
+                <section id="articles" class="articles-section">
+                    <div class="section-header">
+                        <h2>最新記事</h2>
+                        <p class="section-description">私の考えと経験を共有します</p>
+                    </div>
+                    <div class="articles-list">
+                        <!-- 記事リストはJavaScriptで動的に追加されます -->
+                    </div>
+                </section>
+            </div>
+        </section>
     </main>
+
+    <!-- フッター -->
     <footer>
         <p>&copy; 2025 Cyouhanki's Home. All rights reserved.</p>
     </footer>
+
     <script src="../../js/main.js"></script>
+    <script src="../../js/charts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 地図初期化
+            const map = L.map('map').setView([43.0618, 141.3545], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+            const marker = L.marker([31.3, 120.6]).addTo(map);
+        });
+    </script>
 </body>
 </html>

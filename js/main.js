@@ -6,48 +6,77 @@ async function loadArticles() {
   try {
     // 获取当前页面路径
     const currentPath = window.location.pathname;
+    console.log('Current path for articles loading:', currentPath);
     let articles = [];
+    
+    // 添加时间戳防止缓存
+    const timestamp = new Date().getTime();
+    console.log('Using timestamp to prevent caching:', timestamp);
     
     // 根据页面类型决定加载哪些文章
     if (currentPath === '/' || currentPath === '/index.html' || 
-        currentPath === '/site_pure/' || currentPath === '/site_pure/index.html') {
+        currentPath.endsWith('/site_pure/') || currentPath.endsWith('/site_pure/index.html')) {
       // 首页：加载所有语言的最新文章
       const languages = ['zh', 'en', 'jp'];
+      
       for (const lang of languages) {
         try {
-          // 根据环境使用不同的路径
-          const jsonPath = currentPath.includes('site_pure') ? 
-            `/site_pure/articles/${lang}-articles.json` : 
-            `./articles/${lang}-articles.json`;
-            
+          // 使用相对路径加载JSON
+          const jsonPath = `./articles/${lang}-articles.json?t=${timestamp}`;
+          console.log(`Attempting to load articles from: ${jsonPath}`);
+          
           const response = await fetch(jsonPath);
           if (response.ok) {
             const langArticles = await response.json();
             articles = articles.concat(langArticles.map(article => ({...article, lang})));
+            console.log(`Loaded ${langArticles.length} articles for ${lang}`);
+          } else {
+            console.error(`Failed to load ${lang} articles:`, response.status);
           }
         } catch (error) {
           console.error(`Error loading ${lang} articles:`, error);
         }
       }
-    } else {
-      // 语言特定页面：只加载对应语言的文章
-      const lang = getCurrentLanguage();
+    } else if (currentPath.includes('/en/index.html') || 
+               currentPath.includes('/jp/index.html')) {
+      // 语言版本首页：加载该语言的所有文章和最新文章
+      // 提取当前语言
+      const lang = currentPath.includes('/en/') ? 'en' : 'jp';
+      
       try {
-        // 根据环境和页面位置使用不同的路径
-        let jsonPath;
-        if (currentPath.includes('site_pure')) {
-          // GitHub Pages环境
-          jsonPath = `/site_pure/articles/${lang}-articles.json`;
-        } else if (currentPath.includes('/articles/')) {
-          // 在articles子目录中
-          jsonPath = `../${lang}-articles.json`;
-        } else {
-          // 其他情况
-          jsonPath = `./articles/${lang}-articles.json`;
-        }
-          
-        console.log('Fetching articles from:', jsonPath); // 添加调试日志
+        const jsonPath = `../../articles/${lang}-articles.json?t=${timestamp}`;
+        console.log(`Loading articles for language homepage: ${jsonPath}`);
+        
         const response = await fetch(jsonPath);
+        if (response.ok) {
+          const langArticles = await response.json();
+          articles = langArticles.map(article => ({...article, lang}));
+          console.log(`Loaded ${articles.length} articles for ${lang} homepage`);
+        } else {
+          console.error(`Failed to load articles for ${lang} homepage:`, response.status);
+        }
+      } catch (error) {
+        console.error(`Error loading ${lang} homepage articles:`, error);
+      }
+    } else {
+      // 特定语言文章页面
+      const lang = getCurrentLanguage();
+      console.log(`Loading articles for specific language: ${lang}`);
+      
+      try {
+        // 根据页面路径决定JSON路径
+        let jsonPath;
+        if (currentPath.includes('/articles/')) {
+          // 在articles子目录
+          jsonPath = `../${lang}-articles.json?t=${timestamp}`;
+        } else {
+          // 其他路径
+          jsonPath = `./articles/${lang}-articles.json?t=${timestamp}`;
+        }
+        
+        console.log(`Fetching articles from: ${jsonPath}`);
+        const response = await fetch(jsonPath);
+        
         if (response.ok) {
           articles = await response.json();
           articles = articles.map(article => ({...article, lang}));
@@ -59,8 +88,9 @@ async function loadArticles() {
       }
     }
     
-    // 按日期排序并只显示最新的10篇文章
+    // 按日期排序并只显示最新的文章
     articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+    console.log(`Total articles after sorting: ${articles.length}`);
     const latestArticles = articles.slice(0, 10);
     
     if (latestArticles.length === 0) {
@@ -368,7 +398,7 @@ function initMap() {
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
       background: #fff;
     ">
-      <img src="./self1.png" style="
+      <img src="${getPathPrefix()}self1.png" style="
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -470,7 +500,28 @@ function initMap() {
   });
 }
 
-// 定义全局书籍数据
+// 获取当前路径前缀的辅助函数
+function getPathPrefix() {
+  const currentPath = window.location.pathname;
+  let rootPath = './';
+  
+  // 根据当前路径计算到网站根目录的路径
+  if (currentPath.includes('/articles/en/') || 
+      currentPath.includes('/articles/jp/') ||
+      currentPath.includes('/articles/zh/')) {
+      rootPath = '../../'; // 二级子目录需要回退两级
+  } else if (currentPath.includes('/articles/')) {
+      rootPath = '../'; // 一级子目录需要回退一级
+  } else if (currentPath.includes('/en/') || 
+             currentPath.includes('/jp/') ||
+             currentPath.includes('/zh/')) {
+      rootPath = '../'; // 一级子目录需要回退一级
+  }
+  
+  return rootPath;
+}
+
+// 书籍数据
 const books = [
     {
         title: "波兰人",
@@ -547,14 +598,35 @@ function loadBooks() {
         const categoryName = activeCategory.textContent.split('\n')[0].trim();
         console.log('Active category name:', categoryName);
         
-        const filteredBooks = categoryName === 'All' 
+        // 处理不同语言的分类名称映射
+        const categoryMapping = {
+            // 英语
+            'Major': 'Major',
+            'Novel': 'Novel',
+            'Academic': 'Major',
+            'Fiction': 'Novel',
+            // 日语
+            '専門': 'Major',
+            '小説': 'Novel',
+            // 中文
+            '专业': 'Major',
+            '小说': 'Novel',
+            // 首页的其他可能名称
+            'All': 'All'
+        };
+        
+        // 转换为标准分类名称
+        const standardCategory = categoryMapping[categoryName] || categoryName;
+        console.log('Mapped to standard category:', standardCategory);
+        
+        const filteredBooks = standardCategory === 'All' 
             ? books 
-            : books.filter(book => book.category === categoryName);
+            : books.filter(book => book.category === standardCategory);
             
         console.log('Filtered books:', filteredBooks);
         
         if (filteredBooks.length === 0) {
-            console.log('No books found for category:', categoryName);
+            console.log('No books found for category:', standardCategory);
             booksGrid.innerHTML = `
                 <div style="text-align: center; padding: 2rem; color: #666;">
                     该分类下暂无书籍。
@@ -567,8 +639,20 @@ function loadBooks() {
             console.log('Creating book card for:', book.title);
             const bookCard = document.createElement('div');
             bookCard.className = 'book-card';
+            
+            // 使用绝对路径处理图片URL
+            let rootPath = getPathPrefix();
+            console.log('Using root path from helper:', rootPath);
+            
+            // 提取图片相对路径（移除开头的./)
+            const imagePath = book.cover.startsWith('./') ? book.cover.substring(2) : book.cover;
+            const coverPath = rootPath + imagePath;
+            const placeholderPath = rootPath + 'images/placeholder.jpg';
+            
+            console.log('Final cover path:', coverPath);
+            
             bookCard.innerHTML = `
-                <img src="${book.cover}" alt="${book.title}" onerror="this.src='./images/placeholder.jpg'">
+                <img src="${coverPath}" alt="${book.title}" onerror="this.src='${placeholderPath}'">
                 <div class="book-info">
                     <h3 class="book-title">${book.title}</h3>
                     <p class="book-author">${book.author}</p>
@@ -653,6 +737,21 @@ function initCategoryTags() {
     
     console.log('Initializing category tags:', categoryTags.length);
     
+    // 创建分类名称映射（与loadBooks中相同的映射）
+    const categoryMapping = {
+        // 英语
+        'Major': 'Major',
+        'Novel': 'Novel',
+        'Academic': 'Major',
+        'Fiction': 'Novel',
+        // 日语
+        '専門': 'Major',
+        '小説': 'Novel',
+        // 中文
+        '专业': 'Major',
+        '小说': 'Novel'
+    };
+    
     // 计算每个分类的书籍数量
     const categoryCounts = {};
     books.forEach(book => {
@@ -662,7 +761,12 @@ function initCategoryTags() {
     // 更新分类标签的数量
     categoryTags.forEach(tag => {
         const category = tag.textContent.trim();
-        const count = categoryCounts[category] || 0;
+        // 使用映射获取标准分类名称
+        const standardCategory = categoryMapping[category] || category;
+        // 获取该标准分类的书籍数量
+        const count = categoryCounts[standardCategory] || 0;
+        
+        console.log(`Category tag: ${category}, maps to: ${standardCategory}, count: ${count}`);
         tag.setAttribute('data-count', count);
     });
     
