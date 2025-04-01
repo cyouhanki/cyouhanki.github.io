@@ -17,6 +17,28 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <!-- Include Leaflet.js -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        .typewriter h3 {
+            overflow: hidden;
+            border-right: .15em solid #666;
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: .15em;
+            animation: 
+                typing 3.5s steps(30, end),
+                blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #666 }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -47,7 +69,9 @@
             <div class="hero-content">
                 <h1>Welcome to my secret gardening</h1>
                 <h2>Welcome to my secret garden</h2>
-                <h3>I am cyouhanki</h3>
+                <div class="typewriter">
+                    <h3>I am cyouhanki</h3>
+                </div>
                 <div class="hero-tags">
                     <span class="hero-tag">Master's in Religious Studies</span>
                     <span class="hero-tag">Current AI User</span>
@@ -195,6 +219,30 @@
             }).addTo(map);
             const marker = L.marker([31.3, 120.6]).addTo(map);
         });
+
+        const typeWriter = document.querySelector('.typewriter h3');
+        const text = "I am cyouhanki";
+        let i = 0;
+
+        typeWriter.textContent = '';
+
+        function type() {
+            if (i < text.length) {
+                typeWriter.textContent += text.charAt(i);
+                i++;
+                setTimeout(type, 100);
+            }
+        }
+
+        // 开始打字效果
+        type();
+
+        // 循环效果
+        setInterval(() => {
+            typeWriter.textContent = '';
+            i = 0;
+            type();
+        }, 5000);
     </script>
 </body>
 </html>

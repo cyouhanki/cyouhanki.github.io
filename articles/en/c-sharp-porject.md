@@ -2,7 +2,7 @@
 title: "C# Small Project Demo"
 date: "2020-03-31"
 category: "C#"
-excerpt: "Help provided by AI assistant during website construction"
+excerpt: "A Simple Project I Did in 2020, Reviewing It Now for Job Hunting"
 ---
 
 ## A Simple Project I Did in 2020, Reviewing It Now for Job Hunting

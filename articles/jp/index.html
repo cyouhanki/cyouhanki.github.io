@@ -133,6 +133,24 @@
             font-weight: 600;
             color: #333;
         }
+        .typewriter h3 {
+            overflow: hidden;
+            border-right: .15em solid #666;
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: .15em;
+            animation: 
+                typing 3.5s steps(30, end),
+                blink-caret .75s step-end infinite;
+        }
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #666 }
+        }
     </style>
 </head>
 <body>
@@ -164,7 +182,9 @@
             <div class="hero-content">
                 <h1>Welcome to my secret gardening</h1>
                 <h2>ようこそ、うちの秘密ガーデニングへ</h2>
-                <h3>私はcyouhankiです</h3>
+                <div class="typewriter">
+                    <h3>cyouhankiです</h3>
+                </div>
                 <div class="hero-tags">
                     <span class="hero-tag">宗教学修士卒業</span>
                     <span class="hero-tag">現在AI利用者</span>
@@ -312,6 +332,30 @@
             }).addTo(map);
             const marker = L.marker([31.3, 120.6]).addTo(map);
         });
+
+        const typeWriter = document.querySelector('.typewriter h3');
+        const text = "私はcyouhankiです";
+        let i = 0;
+
+        typeWriter.textContent = '';
+
+        function type() {
+            if (i < text.length) {
+                typeWriter.textContent += text.charAt(i);
+                i++;
+                setTimeout(type, 100);
+            }
+        }
+
+        // 开始打字效果
+        type();
+
+        // 循环效果
+        setInterval(() => {
+            typeWriter.textContent = '';
+            i = 0;
+            type();
+        }, 5000);
     </script>
 </body>
 </html>
