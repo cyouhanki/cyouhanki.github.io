@@ -1,25 +1,40 @@
-# Node.js
-node_modules/
-npm-debug.log
-yarn-debug.log
-yarn-error.log
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
 
-# 操作系统文件
+# Testing
+/coverage
+
+# Next.js
+/.next/
+/out/
+
+# Production
+/build
+
+# Misc
 .DS_Store
-Thumbs.db
+*.pem
 
-# 编辑器文件
-.idea/
-.vscode/
-*.swp
-*.swo
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
 
-# 构建目录
-/dist/
-/build/
+# Local env files
+.env*.local
+.env
 
-# 本地环境文件
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local 
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# IDE
+.idea
+.vscode

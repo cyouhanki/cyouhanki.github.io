@@ -1,26 +1,25 @@
 {
-  "name": "site_pure",
+  "name": "designer-portfolio",
   "version": "1.0.0",
-  "description": "个人网站",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "serve": "http-server ./ -p 3000",
-    "dev": "node server.js",
-    "start": "node server.js",
-    "generate": "node scripts/generate-articles.js",
-    "watch": "node scripts/watch.js"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "chokidar": "^3.6.0",
-    "express": "^4.18.2",
-    "front-matter": "^4.0.2",
-    "gray-matter": "^4.0.3",
-    "http-server": "^14.1.1",
-    "marked": "^4.3.0"
+    "@tailwindcss/postcss": "^4.3.3",
+    "next": "^15.4.4",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "@types/node": "^22.16.7",
+    "@types/react": "^19.1.9",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.11",
+    "typescript": "^5.8.3"
   }
 }
